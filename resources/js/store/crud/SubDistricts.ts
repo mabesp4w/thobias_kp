@@ -12,8 +12,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "../auth/login";
-import { TemplatesTypes } from "@/types/TemplatesTypes";
-// store templates
+import SubDistrictsTypes from "@/types/SubDistricts";
+// store subDistricts
 type Props = {
     page?: number;
     limit?: number;
@@ -23,26 +23,32 @@ type Props = {
 };
 
 type Store = {
-    dtTemplates: {
+    dtSubDistricts: {
         last_page: number;
         current_page: number;
-        data: TemplatesTypes[];
+        data: SubDistrictsTypes[];
     };
 
-    setTemplates: ({ page, limit, search, sortby, order }: Props) => Promise<{
+    setSubDistricts: ({
+        page,
+        limit,
+        search,
+        sortby,
+        order,
+    }: Props) => Promise<{
         status: string;
         data?: {};
         error?: {};
     }>;
 
-    setShowTemplates: (id: number | string) => Promise<{
+    setShowSubDistricts: (id: number | string) => Promise<{
         status: string;
         data?: {};
         error?: {};
     }>;
 
     addData: (
-        data: TemplatesTypes
+        data: SubDistrictsTypes
     ) => Promise<{ status: string; data?: any; error?: any }>;
 
     removeData: (
@@ -51,18 +57,18 @@ type Store = {
 
     updateData: (
         id: number | string,
-        data: TemplatesTypes
+        data: SubDistrictsTypes
     ) => Promise<{ status: string; data?: any; error?: any }>;
 };
 
-const useTemplates = create(
+const useSubDistricts = create(
     devtools<Store>((set) => ({
-        dtTemplates: {
+        dtSubDistricts: {
             last_page: 0,
             current_page: 0,
             data: [],
         },
-        setTemplates: async ({
+        setSubDistricts: async ({
             page = 1,
             limit = 10,
             search,
@@ -73,7 +79,7 @@ const useTemplates = create(
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
                     method: "get",
-                    url: `/templates`,
+                    url: `/subDistricts`,
                     headers: { Authorization: `Bearer ${token}` },
                     params: {
                         limit,
@@ -83,7 +89,11 @@ const useTemplates = create(
                         order,
                     },
                 });
-                set((state) => ({ ...state, dtTemplates: response.data }));
+                set((state) => ({
+                    ...state,
+                    dtSubDistricts: response.data,
+                }));
+                console.log({ response });
                 return {
                     status: "berhasil",
                     data: response.data,
@@ -95,15 +105,18 @@ const useTemplates = create(
                 };
             }
         },
-        setShowTemplates: async (id) => {
+        setShowSubDistricts: async (id) => {
             try {
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
                     method: "get",
-                    url: `/templates/${id}`,
+                    url: `/subDistricts/${id}`,
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                set((state) => ({ ...state, dtTemplates: response.data.data }));
+                set((state) => ({
+                    ...state,
+                    dtSubDistricts: response.data.data,
+                }));
                 return {
                     status: "berhasil",
                     data: response.data,
@@ -120,18 +133,17 @@ const useTemplates = create(
                 const token = await useLogin.getState().setToken();
                 const res = await crud({
                     method: "post",
-                    url: `/templates`,
+                    url: `/subDistricts`,
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
                     },
                     data: row,
                 });
                 set((prevState) => ({
-                    dtTemplates: {
-                        last_page: prevState.dtTemplates.last_page,
-                        current_page: prevState.dtTemplates.current_page,
-                        data: [res.data.data, ...prevState.dtTemplates.data],
+                    dtSubDistricts: {
+                        last_page: prevState.dtSubDistricts.last_page,
+                        current_page: prevState.dtSubDistricts.current_page,
+                        data: [res.data.data, ...prevState.dtSubDistricts.data],
                     },
                 }));
                 return {
@@ -150,14 +162,14 @@ const useTemplates = create(
                 const token = await useLogin.getState().setToken();
                 const res = await crud({
                     method: "delete",
-                    url: `/templates/${id}`,
+                    url: `/subDistricts/${id}`,
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 set((prevState) => ({
-                    dtTemplates: {
-                        last_page: prevState.dtTemplates.last_page,
-                        current_page: prevState.dtTemplates.current_page,
-                        data: prevState.dtTemplates.data.filter(
+                    dtSubDistricts: {
+                        last_page: prevState.dtSubDistricts.last_page,
+                        current_page: prevState.dtSubDistricts.current_page,
+                        data: prevState.dtSubDistricts.data.filter(
                             (item: any) => item.id !== id
                         ),
                     },
@@ -176,21 +188,17 @@ const useTemplates = create(
         updateData: async (id, row) => {
             try {
                 const token = await useLogin.getState().setToken();
-
                 const response = await crud({
-                    method: "POST",
-                    url: `/templates/${id}?_method=PUT`,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    },
+                    method: "PUT",
+                    url: `/subDistricts/${id}`,
+                    headers: { Authorization: `Bearer ${token}` },
                     data: row,
                 });
                 set((prevState) => ({
-                    dtTemplates: {
-                        last_page: prevState.dtTemplates.last_page,
-                        current_page: prevState.dtTemplates.current_page,
-                        data: prevState.dtTemplates.data.map((item: any) => {
+                    dtSubDistricts: {
+                        last_page: prevState.dtSubDistricts.last_page,
+                        current_page: prevState.dtSubDistricts.current_page,
+                        data: prevState.dtSubDistricts.data.map((item: any) => {
                             if (item.id === id) {
                                 return {
                                     ...item,
@@ -216,4 +224,4 @@ const useTemplates = create(
     }))
 );
 
-export default useTemplates;
+export default useSubDistricts;

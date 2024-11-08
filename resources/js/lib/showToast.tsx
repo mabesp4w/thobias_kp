@@ -7,7 +7,7 @@ interface Props {
 export function showToast(props: Props) {
     let className;
     if (props.type === "success") {
-        className = "bg-primary";
+        className = "bg-secondary text-black";
     } else if (props.type === "error") {
         className = "bg-destructive";
     } else {

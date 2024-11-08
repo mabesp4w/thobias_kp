@@ -10,3 +10,16 @@ Route::get('/', function () {
 Route::get('banners', function () {
     return Inertia::render('Admin/banners/Index');
 });
+
+// locations
+Route::group(['prefix' => 'locations'], function () {
+    Route::get('subDistricts', function () {
+        return Inertia::render('Admin/locations/subDistricts/Index');
+    });
+    Route::get('villages', function () {
+        return Inertia::render('Admin/locations/villages/Index');
+    });
+    Route::get('shippingCosts', function () {
+        return Inertia::render('Admin/locations/shippingCosts/Index');
+    });
+});

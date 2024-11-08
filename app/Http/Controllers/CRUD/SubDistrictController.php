@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\CRUD;
 
-use App\Models\Category;
+use Inertia\Inertia;
+use App\Models\SubDistrict;
 use Illuminate\Http\Request;
 use App\Http\Resources\CrudResource;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController
+class SubDistrictController
 {
     protected function spartaValidation($request, $id = "")
     {
@@ -16,12 +17,12 @@ class CategoryController
             $required = "required";
         }
         $rules = [
-            'category_nm' => 'required|unique:categories,category_nm,' . $id,
+            'sub_district_nm' => 'required|unique:categories,sub_district_nm,' . $id,
         ];
 
         $messages = [
-            'category_nm.required' => 'Nama Category harus diisi.',
-            'category_nm.unique' => 'Category sudah ada.',
+            'sub_district_nm.required' => 'Nama SubDistrict harus diisi.',
+            'sub_district_nm.unique' => 'SubDistrict sudah ada.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 
@@ -43,14 +44,14 @@ class CategoryController
         $sortby = $request->sortby;
         $order = $request->order;
 
-        $data = Category::where(function ($query) use ($search) {
-            $query->where('category_nm', 'like', "%$search%");
+        $data = SubDistrict::where(function ($query) use ($search) {
+            $query->where('sub_district_nm', 'like', "%$search%");
         })
             ->when($sortby, function ($query) use ($sortby, $order) {
                 $query->orderBy($sortby, $order ?? 'asc');
             })
             ->get();
-        return new CrudResource('success', 'Data Category', $data);
+        return new CrudResource('success', 'Data SubDistrict', $data);
     }
 
     /**
@@ -72,9 +73,9 @@ class CategoryController
         if ($validate) {
             return $validate;
         }
-        Category::create($data_req);
+        SubDistrict::create($data_req);
 
-        $data = Category::latest()->first();
+        $data = SubDistrict::latest()->first();
 
         return new CrudResource('success', 'Data Berhasil Disimpan', $data);
     }
@@ -107,9 +108,9 @@ class CategoryController
             return $validate;
         }
 
-        Category::find($id)->update($data_req);
+        SubDistrict::find($id)->update($data_req);
 
-        $data = Category::find($id);
+        $data = SubDistrict::find($id);
 
         return new CrudResource('success', 'Data Berhasil Diubah', $data);
     }
@@ -119,7 +120,7 @@ class CategoryController
      */
     public function destroy(string $id)
     {
-        $data = Category::findOrFail($id);
+        $data = SubDistrict::findOrFail($id);
         // delete data
         $data->delete();
 

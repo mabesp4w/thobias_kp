@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\CRUD;
 
-use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Http\Resources\CrudResource;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController
+class SubCategoryController
 {
     protected function spartaValidation($request, $id = "")
     {
@@ -16,12 +16,12 @@ class CategoryController
             $required = "required";
         }
         $rules = [
-            'category_nm' => 'required|unique:categories,category_nm,' . $id,
+            'sub_category_nm' => 'required|unique:categories,sub_category_nm,' . $id,
         ];
 
         $messages = [
-            'category_nm.required' => 'Nama Category harus diisi.',
-            'category_nm.unique' => 'Category sudah ada.',
+            'sub_category_nm.required' => 'Nama SubCategory harus diisi.',
+            'sub_category_nm.unique' => 'SubCategory sudah ada.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 
@@ -43,14 +43,14 @@ class CategoryController
         $sortby = $request->sortby;
         $order = $request->order;
 
-        $data = Category::where(function ($query) use ($search) {
-            $query->where('category_nm', 'like', "%$search%");
+        $data = SubCategory::where(function ($query) use ($search) {
+            $query->where('sub_category_nm', 'like', "%$search%");
         })
             ->when($sortby, function ($query) use ($sortby, $order) {
                 $query->orderBy($sortby, $order ?? 'asc');
             })
             ->get();
-        return new CrudResource('success', 'Data Category', $data);
+        return new CrudResource('success', 'Data SubCategory', $data);
     }
 
     /**
@@ -72,9 +72,9 @@ class CategoryController
         if ($validate) {
             return $validate;
         }
-        Category::create($data_req);
+        SubCategory::create($data_req);
 
-        $data = Category::latest()->first();
+        $data = SubCategory::latest()->first();
 
         return new CrudResource('success', 'Data Berhasil Disimpan', $data);
     }
@@ -107,9 +107,9 @@ class CategoryController
             return $validate;
         }
 
-        Category::find($id)->update($data_req);
+        SubCategory::find($id)->update($data_req);
 
-        $data = Category::find($id);
+        $data = SubCategory::find($id);
 
         return new CrudResource('success', 'Data Berhasil Diubah', $data);
     }
@@ -119,7 +119,7 @@ class CategoryController
      */
     public function destroy(string $id)
     {
-        $data = Category::findOrFail($id);
+        $data = SubCategory::findOrFail($id);
         // delete data
         $data->delete();
 

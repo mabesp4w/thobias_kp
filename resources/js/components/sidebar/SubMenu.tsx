@@ -1,12 +1,3 @@
-/**
- * eslint-disable @typescript-eslint/no-unused-vars
- *
- * @format
- */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/** @format */
-
 import MenuTypes from "@/types/MenuTypes";
 import { Link } from "@inertiajs/react";
 import { FC } from "react";
@@ -66,18 +57,23 @@ const SubMenu: FC<Props> = ({
                 {subMenus &&
                     subMenus.map((subMenu, index) => {
                         const isActiveSub = pathname === subMenu.href;
+                        const subTruncatedName =
+                            subMenu.name.length > 10
+                                ? subMenu.name.slice(0, 10) + "..."
+                                : subMenu.name;
                         return (
                             <div className="ml-4 select-none" key={index}>
                                 {!subMenu.subMenus && (
                                     <Link
                                         href={subMenu.href || "#"}
+                                        title={subMenu.name}
                                         className={`flex items-start mx-3 py-2 transition-colors duration-300 transform rounded-lg hover:text-fifth hover:font-normal ${
                                             isActiveSub &&
-                                            " text-fifth font-bold"
+                                            " text-secondary font-bold"
                                         }`}
                                     >
                                         <span className="mx-2">
-                                            {subMenu.name}
+                                            {subTruncatedName}
                                         </span>
                                     </Link>
                                 )}

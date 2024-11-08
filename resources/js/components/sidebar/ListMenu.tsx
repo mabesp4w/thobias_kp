@@ -2,7 +2,7 @@
 import MenuTypes from "@/types/MenuTypes";
 import { ImageIcon } from "@radix-ui/react-icons";
 
-import { BsHouseDoor, BsPerson } from "react-icons/bs";
+import { BsHouseDoor, BsMarkerTip, BsPerson } from "react-icons/bs";
 
 const createUrl = (path: string) => `/admin${path}`;
 
@@ -19,17 +19,36 @@ const setAdminMenus = async () => {
             icon: <ImageIcon />,
         },
         {
+            name: "Lokasi",
+            slug: "locations",
+            icon: <BsMarkerTip />,
+            subMenus: [
+                {
+                    name: "Kecamatan/Distrik",
+                    href: createUrl("/locations/subDistricts"),
+                },
+                {
+                    name: "Kelurahan",
+                    href: createUrl("/locations/villages"),
+                },
+                {
+                    name: "Ongkir",
+                    href: createUrl("/locations/shippingCosts"),
+                },
+            ],
+        },
+        {
             name: "Kategori",
             slug: "categories",
             icon: <BsPerson />,
             subMenus: [
                 {
-                    name: "Foto",
+                    name: "Daftar Kategori",
                     href: createUrl("/categories/lists"),
                 },
                 {
-                    name: "Vidio",
-                    href: createUrl("/categories/subcategories"),
+                    name: "Sub Kategori",
+                    href: createUrl("/categories/subCategories"),
                 },
             ],
         },

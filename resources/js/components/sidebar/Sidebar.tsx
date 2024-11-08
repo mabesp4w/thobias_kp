@@ -56,7 +56,7 @@ const Sidebar: FC<Props> = ({ type = "admin" }) => {
         return () => {};
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menus, pathname]);
-    console.log({ pathname });
+
     return (
         <>
             <aside
