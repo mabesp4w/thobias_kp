@@ -15,6 +15,7 @@ type Props = {
     label?: string;
     menuPosition?: "fixed" | "absolute";
     defaultOptions?: boolean;
+    menuPortalTarget?: boolean;
 };
 
 const SelectFromDb: FC<Props> = ({
@@ -29,9 +30,15 @@ const SelectFromDb: FC<Props> = ({
     label,
     defaultOptions = true,
     menuPosition = "fixed",
+    menuPortalTarget = false,
 }) => {
     // style
     const styles: StylesConfig<any, true> = {
+        menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999,
+            pointerEvents: "auto",
+        }),
         multiValue: (base, state) => {
             return state.data.isFixed
                 ? { ...base, backgroundColor: "gray" }
@@ -138,6 +145,9 @@ const SelectFromDb: FC<Props> = ({
                         placeholder={placeholder}
                         menuPlacement="auto"
                         menuPosition={menuPosition}
+                        menuPortalTarget={
+                            menuPortalTarget ? document.body : null
+                        }
                         styles={styles}
                         ref={ref}
                         value={

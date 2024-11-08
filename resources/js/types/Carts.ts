@@ -7,5 +7,5 @@ export default interface CartsTypes {
     user_id: string;
     qty: number;
     total_price: number;
-    products: ProductsTypes;
+    product: ProductsTypes;
 }

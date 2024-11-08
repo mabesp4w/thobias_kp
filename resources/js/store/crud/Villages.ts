@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "../auth/login";
-import BannersTypes from "@/types/Banners";
-// store banners
+import VillagesTypes from "@/types/Villages";
+// store villages
 type Props = {
     page?: number;
     limit?: number;
@@ -13,26 +13,26 @@ type Props = {
 };
 
 type Store = {
-    dtBanners: {
+    dtVillages: {
         last_page: number;
         current_page: number;
-        data: BannersTypes[];
+        data: VillagesTypes[];
     };
 
-    setBanners: ({ page, limit, search, sortby, order }: Props) => Promise<{
+    setVillages: ({ page, limit, search, sortby, order }: Props) => Promise<{
         status: string;
         data?: {};
         error?: {};
     }>;
 
-    setShowBanners: (id: number | string) => Promise<{
+    setShowVillages: (id: number | string) => Promise<{
         status: string;
         data?: {};
         error?: {};
     }>;
 
     addData: (
-        data: BannersTypes
+        data: VillagesTypes
     ) => Promise<{ status: string; data?: any; error?: any }>;
 
     removeData: (
@@ -41,23 +41,29 @@ type Store = {
 
     updateData: (
         id: number | string,
-        data: BannersTypes
+        data: VillagesTypes
     ) => Promise<{ status: string; data?: any; error?: any }>;
 };
 
-const useBanners = create(
+const useVillages = create(
     devtools<Store>((set) => ({
-        dtBanners: {
+        dtVillages: {
             last_page: 0,
             current_page: 0,
             data: [],
         },
-        setBanners: async ({ page = 1, limit = 10, search, sortby, order }) => {
+        setVillages: async ({
+            page = 1,
+            limit = 10,
+            search,
+            sortby,
+            order,
+        }) => {
             try {
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
                     method: "get",
-                    url: `/banners`,
+                    url: `/villages`,
                     headers: { Authorization: `Bearer ${token}` },
                     params: {
                         limit,
@@ -67,7 +73,11 @@ const useBanners = create(
                         order,
                     },
                 });
-                set((state) => ({ ...state, dtBanners: response.data }));
+                set((state) => ({
+                    ...state,
+                    dtVillages: response.data,
+                }));
+                console.log({ response });
                 return {
                     status: "berhasil",
                     data: response.data,
@@ -79,15 +89,18 @@ const useBanners = create(
                 };
             }
         },
-        setShowBanners: async (id) => {
+        setShowVillages: async (id) => {
             try {
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
                     method: "get",
-                    url: `/banners/${id}`,
+                    url: `/villages/${id}`,
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                set((state) => ({ ...state, dtBanners: response.data.data }));
+                set((state) => ({
+                    ...state,
+                    dtVillages: response.data.data,
+                }));
                 return {
                     status: "berhasil",
                     data: response.data,
@@ -104,18 +117,17 @@ const useBanners = create(
                 const token = await useLogin.getState().setToken();
                 const res = await crud({
                     method: "post",
-                    url: `/banners`,
+                    url: `/villages`,
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
                     },
                     data: row,
                 });
                 set((prevState) => ({
-                    dtBanners: {
-                        last_page: prevState.dtBanners.last_page,
-                        current_page: prevState.dtBanners.current_page,
-                        data: [res.data.data, ...prevState.dtBanners.data],
+                    dtVillages: {
+                        last_page: prevState.dtVillages.last_page,
+                        current_page: prevState.dtVillages.current_page,
+                        data: [res.data.data, ...prevState.dtVillages.data],
                     },
                 }));
                 return {
@@ -134,14 +146,14 @@ const useBanners = create(
                 const token = await useLogin.getState().setToken();
                 const res = await crud({
                     method: "delete",
-                    url: `/banners/${id}`,
+                    url: `/villages/${id}`,
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 set((prevState) => ({
-                    dtBanners: {
-                        last_page: prevState.dtBanners.last_page,
-                        current_page: prevState.dtBanners.current_page,
-                        data: prevState.dtBanners.data.filter(
+                    dtVillages: {
+                        last_page: prevState.dtVillages.last_page,
+                        current_page: prevState.dtVillages.current_page,
+                        data: prevState.dtVillages.data.filter(
                             (item: any) => item.id !== id
                         ),
                     },
@@ -160,21 +172,17 @@ const useBanners = create(
         updateData: async (id, row) => {
             try {
                 const token = await useLogin.getState().setToken();
-
                 const response = await crud({
-                    method: "POST",
-                    url: `/banners/${id}?_method=PUT`,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    },
+                    method: "PUT",
+                    url: `/villages/${id}`,
+                    headers: { Authorization: `Bearer ${token}` },
                     data: row,
                 });
                 set((prevState) => ({
-                    dtBanners: {
-                        last_page: prevState.dtBanners.last_page,
-                        current_page: prevState.dtBanners.current_page,
-                        data: prevState.dtBanners.data.map((item: any) => {
+                    dtVillages: {
+                        last_page: prevState.dtVillages.last_page,
+                        current_page: prevState.dtVillages.current_page,
+                        data: prevState.dtVillages.data.map((item: any) => {
                             if (item.id === id) {
                                 return {
                                     ...item,
@@ -200,4 +208,4 @@ const useBanners = create(
     }))
 );
 
-export default useBanners;
+export default useVillages;

@@ -6,5 +6,5 @@ export default interface ProductImagesTypes {
     product_id: string;
     position: number;
     product_img: string;
-    products: ProductsTypes;
+    product: ProductsTypes;
 }

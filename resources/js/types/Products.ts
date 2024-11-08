@@ -8,5 +8,5 @@ export default interface ProductsTypes {
     slug: string;
     price: string;
     stock: number;
-    sub_categories: SubCategoriesTypes;
+    sub_category: SubCategoriesTypes;
 }

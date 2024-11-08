@@ -4,5 +4,5 @@ export default interface ShippingCostsTypes {
     id: string;
     village_id: string;
     shipping_cost: number;
-    villages: VillagesTypes;
+    village: VillagesTypes;
 }

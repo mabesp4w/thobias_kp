@@ -5,6 +5,6 @@ export default interface ShippingStatusesTypes {
     id: string;
     order_id: string;
     user_id: string;
-    orders: OrdersTypes;
+    order: OrdersTypes;
     status: string;
 }

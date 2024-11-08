@@ -1,13 +1,3 @@
-/**
- * eslint-disable @typescript-eslint/no-unused-vars
- *
- * @format
- */
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/** @format */
-
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
