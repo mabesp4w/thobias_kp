@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 0 0% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: #ef108a;
+        --primary-foreground: 0 0% 98%;
+        --secondary: #10ef75;
+        --secondary-foreground: 0 0% 9%;
+        --muted: #f4ebf2;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: #b899a3;
+        --accent-foreground: 0 0% 9%;
+        --destructive: #f70000;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 3.9%;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+        --radius: 0.5rem;
+    }
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
+}
+/* Cocomat Pro Regular */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+/* Cocomat Pro Bold */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Cocomat Pro Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Italic.ttf") format("truetype");
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Cocomat Pro Bold Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-BoldItalic.ttf") format("truetype");
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Cocomat Pro Light */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Light.ttf") format("truetype");
+    font-weight: lighter;
+    font-style: normal;
+}
+
+/* Cocomat Pro Light Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-LightItalic.ttf") format("truetype");
+    font-weight: lighter;
+    font-style: italic;
+}
+
+/* Cocomat Pro Thin */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Thin.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+/* Cocomat Pro Thin Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-ThinItalic.ttf") format("truetype");
+    font-weight: 100;
+    font-style: italic;
+}
+
+/* Cocomat Pro Medium */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Cocomat Pro Medium Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-MediumItalic.ttf")
+        format("truetype");
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Cocomat Pro Black */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* Cocomat Pro Black Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-BlackItalic.ttf") format("truetype");
+    font-weight: 900;
+    font-style: italic;
+}
+
+/* Cocomat Pro ExtraBold */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* Cocomat Pro ExtraBold Italic */
+@font-face {
+    font-family: "Cocomat-Pro";
+    src: url("/fonts/cocomat-pro/CocomatPro-ExtraBoldItalic.ttf")
+        format("truetype");
+    font-weight: 800;
+    font-style: italic;
+}
+
+/* Redkits  */
+@font-face {
+    font-family: "Redkits";
+    src: url("/fonts/redkits/RedKits.otf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer utilities {
+    .my-container {
+        @apply md:mx-6 mx-2;
+    }
+    .toaster-top-right {
+        position: fixed;
+        top: 0;
+        right: 0r;
+        z-index: 1000; /* Pastikan toast di atas elemen lain */
+    }
+}
