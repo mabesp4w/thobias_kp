@@ -52,6 +52,11 @@ const setAdminMenus = async () => {
                 },
             ],
         },
+        {
+            name: "Produk",
+            href: createUrl("/products/lists"),
+            icon: <ImageIcon />,
+        },
     ];
 
     return ListMenu;

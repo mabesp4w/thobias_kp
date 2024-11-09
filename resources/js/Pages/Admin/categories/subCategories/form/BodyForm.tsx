@@ -19,7 +19,7 @@ const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
     const { setCategories, dtCategories } = useCategories();
     // state
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const fetchSubCategories = useCallback(async () => {
+    const fetchCategories = useCallback(async () => {
         setIsLoading(true);
         await setCategories({ page: 1, limit: 10 });
         setIsLoading(false);
@@ -27,7 +27,7 @@ const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
 
     // call fetch
     useEffect(() => {
-        fetchSubCategories();
+        fetchCategories();
     }, [showModal]);
 
     return (

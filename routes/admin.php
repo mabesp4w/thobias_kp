@@ -33,3 +33,10 @@ Route::group(['prefix' => 'categories'], function () {
         return Inertia::render('Admin/categories/subCategories/Index');
     });
 });
+
+// products
+Route::group(['prefix' => 'products'], function () {
+    Route::get('lists', function () {
+        return Inertia::render('Admin/products/lists/Index');
+    });
+});
