@@ -20,4 +20,9 @@ class SubCategory extends Model
             $category->slug = Str::slug("{$category->category_id}-{$category->sub_category_nm}");
         });
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -6,5 +6,5 @@ export default interface SubCategoriesTypes {
     category_id: string;
     sub_category_nm: string;
     slug: string;
-    sub_category: CategoriesTypes;
+    category: CategoriesTypes;
 }

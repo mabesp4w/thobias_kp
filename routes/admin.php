@@ -29,4 +29,7 @@ Route::group(['prefix' => 'categories'], function () {
     Route::get('lists', function () {
         return Inertia::render('Admin/categories/lists/Index');
     });
+    Route::get('subCategories', function () {
+        return Inertia::render('Admin/categories/subCategories/Index');
+    });
 });

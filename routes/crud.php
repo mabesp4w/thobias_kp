@@ -8,5 +8,6 @@ Route::resources([
     'villages' => \App\Http\Controllers\CRUD\VillageController::class,
     'shippingCosts' => \App\Http\Controllers\CRUD\ShippingCostController::class,
     'categories' => \App\Http\Controllers\CRUD\CategoryController::class,
+    'subCategories' => \App\Http\Controllers\CRUD\SubCategoryController::class,
     // 'products' => \App\Http\Controllers\CRUD\ProductController::class,
 ]);

@@ -43,7 +43,7 @@ class SubCategoryController
         $sortby = $request->sortby;
         $order = $request->order;
 
-        $data = SubCategory::where(function ($query) use ($search) {
+        $data = SubCategory::with('category')->where(function ($query) use ($search) {
             $query->where('sub_category_nm', 'like', "%$search%");
         })
             ->when($sortby, function ($query) use ($sortby, $order) {
@@ -74,7 +74,7 @@ class SubCategoryController
         }
         SubCategory::create($data_req);
 
-        $data = SubCategory::latest()->first();
+        $data = SubCategory::with('category')->latest()->first();
 
         return new CrudResource('success', 'Data Berhasil Disimpan', $data);
     }
@@ -109,7 +109,7 @@ class SubCategoryController
 
         SubCategory::find($id)->update($data_req);
 
-        $data = SubCategory::find($id);
+        $data = SubCategory::with('category')->find($id);
 
         return new CrudResource('success', 'Data Berhasil Diubah', $data);
     }
