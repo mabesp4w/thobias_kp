@@ -4,7 +4,8 @@ import useShippingCosts from "@/store/crud/ShippingCosts";
 import { DataTable } from "@/components/table/TableDefault";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import { generateColumns } from "@/lib/generateColumns";
-import columnsConfig from "./columnsConfig";
+import transformDataWithFilters from "@/lib/transformDataWithFilters";
+import { columnsConfig, updateAccessorKeys } from "./columnsConfig";
 
 // subjects
 type DeleteProps = {
@@ -53,17 +54,34 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
         };
     }, [search, sortby, order, limit]);
 
+    // Panggil fungsi dengan data dan filter yang diinginkan
+    const nestedFilters = [
+        "village.sub_district.sub_district_nm",
+        "village.village_nm",
+    ];
+    const transformedData = transformDataWithFilters(
+        dtShippingCosts.data,
+        nestedFilters
+    );
+    // Buat konfigurasi kolom dengan accessorKey yang diperbarui
+    const updatedColumnsConfig = updateAccessorKeys(
+        columnsConfig,
+        nestedFilters
+    );
+
     return (
         <div className="flex-1 flex-col max-w-full h-full overflow-auto">
             {!isLoading ? (
                 <DataTable
-                    data={dtShippingCosts.data}
+                    data={transformedData}
                     columns={generateColumns(
-                        columnsConfig as any,
+                        updatedColumnsConfig as any,
                         setEdit,
                         (rowId) => setDelete({ id: rowId, isDelete: false })
                     )}
-                    filters={["category_nm"]}
+                    filters={nestedFilters.map(
+                        (key) => `${key.split(".").join("_")}_filter`
+                    )}
                 />
             ) : (
                 <div className="flex justify-center items-center h-full">

@@ -23,3 +23,10 @@ Route::group(['prefix' => 'locations'], function () {
         return Inertia::render('Admin/locations/shippingCosts/Index');
     });
 });
+
+// categories
+Route::group(['prefix' => 'categories'], function () {
+    Route::get('lists', function () {
+        return Inertia::render('Admin/categories/lists/Index');
+    });
+});

@@ -32,15 +32,6 @@ const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
 
     return (
         <>
-            <InputTextDefault
-                label="Nama Kelurahan"
-                name="village_nm"
-                register={register}
-                required
-                minLength={2}
-                errors={errors.village_nm}
-                addClass="col-span-8"
-            />
             {!isLoading && (
                 <SelectFromDb
                     label="Kecamatan/Distrik"
@@ -55,6 +46,15 @@ const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
                     menuPortalTarget
                 />
             )}
+            <InputTextDefault
+                label="Nama Kelurahan"
+                name="village_nm"
+                register={register}
+                required
+                minLength={2}
+                errors={errors.village_nm}
+                addClass="col-span-8"
+            />
         </>
     );
 };

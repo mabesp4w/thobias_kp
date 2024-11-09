@@ -61,7 +61,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
                     columns={generateColumns(columnsConfig, setEdit, (rowId) =>
                         setDelete({ id: rowId, isDelete: false })
                     )}
-                    filters={["category_nm"]}
+                    filters={["sub_district_nm"]}
                 />
             ) : (
                 <div className="flex justify-center items-center h-full">
