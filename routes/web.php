@@ -1,8 +1,5 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('User/Welcome');
-});
+Route::get('/', [App\Http\Controllers\USER\HomeController::class, 'index'])->name('user.home');
