@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\CRUD;
 
-use Inertia\Inertia;
-use App\Models\Village;
+use App\Models\ShippingCost;
 use Illuminate\Http\Request;
 use App\Http\Resources\CrudResource;
 use Illuminate\Support\Facades\Validator;
 
-class VillageController
+class ShippingCostController
 {
     protected function spartaValidation($request, $id = "")
     {
@@ -17,14 +16,14 @@ class VillageController
             $required = "required";
         }
         $rules = [
-            'village_nm' => 'required|unique:categories,village_nm,' . $id,
-            'sub_district_id' => 'required',
+            'village_id' => 'required|unique:categories,village_id,' . $id,
+            'shipping_cost' => 'required',
         ];
 
         $messages = [
-            'village_nm.required' => 'Nama Kelurahan harus diisi.',
-            'village_nm.unique' => 'Kelurahan sudah ada.',
-            'sub_district_id.required' => 'SubDistrict harus diisi.',
+            'village_id.required' => 'Nama Kelurahan harus diisi.',
+            'village_id.unique' => 'Kelurahan sudah ada.',
+            'shipping_cost.required' => 'Harga harus diisi.',
         ];
         $validator = Validator::make($request, $rules, $messages);
 
@@ -42,18 +41,15 @@ class VillageController
      */
     public function index(Request $request)
     {
-        $search = $request->search;
         $sortby = $request->sortby;
         $order = $request->order;
 
-        $data = Village::with('subDistrict')->where(function ($query) use ($search) {
-            $query->where('village_nm', 'like', "%$search%");
-        })
+        $data = ShippingCost::with('village.subDistrict')
             ->when($sortby, function ($query) use ($sortby, $order) {
                 $query->orderBy($sortby, $order ?? 'asc');
             })
             ->get();
-        return new CrudResource('success', 'Data Village', $data);
+        return new CrudResource('success', 'Data ShippingCost', $data);
     }
 
     /**
@@ -75,9 +71,9 @@ class VillageController
         if ($validate) {
             return $validate;
         }
-        Village::create($data_req);
+        ShippingCost::create($data_req);
 
-        $data = Village::with('subDistrict')->latest()->first();
+        $data = ShippingCost::with('village.subDistrict')->latest()->first();
 
         return new CrudResource('success', 'Data Berhasil Disimpan', $data);
     }
@@ -110,9 +106,9 @@ class VillageController
             return $validate;
         }
 
-        Village::find($id)->update($data_req);
+        ShippingCost::find($id)->update($data_req);
 
-        $data = Village::with('subDistrict')->find($id);
+        $data = ShippingCost::with('village.subDistrict')->find($id);
 
         return new CrudResource('success', 'Data Berhasil Diubah', $data);
     }
@@ -122,7 +118,7 @@ class VillageController
      */
     public function destroy(string $id)
     {
-        $data = Village::findOrFail($id);
+        $data = ShippingCost::findOrFail($id);
         // delete data
         $data->delete();
 
