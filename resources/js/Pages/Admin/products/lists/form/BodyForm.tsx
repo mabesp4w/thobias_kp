@@ -1,5 +1,6 @@
 import InputRupiah from "@/components/input/InputRupiah";
 import InputTextDefault from "@/components/input/InputTextDefault";
+import RichTextEditor from "@/components/input/RichTextEditor";
 import SelectFromDb from "@/components/select/SelectFromDB";
 import useSubCategories from "@/store/crud/SubCategories";
 import ProductsTypes from "@/types/Products";
@@ -15,7 +16,14 @@ type Props = {
     showModal: boolean;
 };
 // products
-const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
+const BodyForm: FC<Props> = ({
+    register,
+    errors,
+    showModal,
+    control,
+    setValue,
+    dtEdit,
+}) => {
     // store
     const { setSubCategories, dtSubCategories } = useSubCategories();
     // state
@@ -61,7 +69,7 @@ const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
                 control={control}
                 name="price"
                 errors={errors.price}
-                addClass="col-span-8"
+                addClass="col-span-6"
                 required
                 minLength={0}
             />
@@ -74,7 +82,18 @@ const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
                 type="number"
                 valueAsNumber
                 errors={errors.stock}
+                addClass="col-span-2"
+            />
+
+            <RichTextEditor
+                control={control}
+                name="description"
+                label="Deskripsi"
                 addClass="col-span-8"
+                required
+                errors={errors.description as any}
+                initialValue={dtEdit?.description || ""}
+                setValue={setValue}
             />
         </>
     );

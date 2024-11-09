@@ -13,7 +13,7 @@ const HeaderComp = (props: Props) => {
                 {/* brand */}
                 <div className="flex items-center gap-x-24 w-full grow">
                     <div className="flex gap-1 text-2xl text-primary">
-                        <span className="font-Redkits text-4xl">
+                        <span className="font-Redkits lg:text-6xl md:text-5xl sm:text-4xl text-3xl">
                             Erta Beauty
                         </span>
                     </div>

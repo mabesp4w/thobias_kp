@@ -1,7 +1,11 @@
 import showRupiah from "@/lib/rupiah";
 import ProductsTypes from "@/types/Products";
+import { router } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 
+const goToDetail = (row: ProductsTypes) => {
+    router.visit(`/admin/products/images/${row.id}`);
+};
 // products
 const columnsConfig: ColumnDef<ProductsTypes>[] = [
     {
@@ -36,6 +40,17 @@ const columnsConfig: ColumnDef<ProductsTypes>[] = [
         header: "Stok",
         cell: ({ row }) => (
             <div className="capitalize">{row.original.stock}</div>
+        ),
+    },
+    {
+        header: "Gambar",
+        cell: ({ row }) => (
+            <div
+                className="capitalize cursor-pointer hover:underline"
+                onClick={() => goToDetail(row.original)}
+            >
+                {row.original.product_image.length}
+            </div>
         ),
     },
 ];

@@ -3,13 +3,13 @@ import MenuTypes from "@/types/MenuTypes";
 
 import { BsActivity, BsHouseDoor, BsNewspaper, BsPerson } from "react-icons/bs";
 
-const createUrl = (path: string) => `/roles/admin${path}`;
+const createUrl = (path: string) => `/${path}`;
 
 const setUsersMenus = async () => {
     const ListMenu: MenuTypes[] = [
         {
             name: "Home",
-            href: createUrl("/dashboard"),
+            href: createUrl(""),
             icon: <BsHouseDoor />,
         },
         {

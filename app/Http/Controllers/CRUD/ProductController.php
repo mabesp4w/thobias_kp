@@ -42,7 +42,7 @@ class ProductController
         $sortby = $request->sortby;
         $order = $request->order;
 
-        $data = Product::with('subCategory.category')->where(function ($query) use ($search) {
+        $data = Product::with(['subCategory.category', 'productImage'])->where(function ($query) use ($search) {
             $query->where('product_nm', 'like', "%$search%");
         })
             ->when($sortby, function ($query) use ($sortby, $order) {
@@ -73,7 +73,7 @@ class ProductController
         }
         Product::create($data_req);
 
-        $data = Product::with('subCategory.category')->latest()->first();
+        $data = Product::with(['subCategory.category', 'productImage'])->latest()->first();
 
         return new CrudResource('success', 'Data Berhasil Disimpan', $data);
     }
@@ -83,7 +83,7 @@ class ProductController
      */
     public function show(string $id)
     {
-        $data = Product::with('subCategory.category')->find($id);
+        $data = Product::with(['subCategory.category', 'productImage'])->find($id);
         return new CrudResource('success', 'Data Product', $data);
     }
 
@@ -109,7 +109,7 @@ class ProductController
 
         Product::find($id)->update($data_req);
 
-        $data = Product::with('subCategory.category')->find($id);
+        $data = Product::with(['subCategory.category', 'productImage'])->find($id);
 
         return new CrudResource('success', 'Data Berhasil Diubah', $data);
     }

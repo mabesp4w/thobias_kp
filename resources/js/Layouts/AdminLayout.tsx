@@ -27,7 +27,6 @@ const AdminLayout: FC<Props> = ({ children }) => {
                             </div>
                             {/* mobile menu */}
                             <MobileSide />
-
                             {/* content */}
                             <div className="grow px-4 lg:mr-2 rounded-lg py-2 text-gray-900">
                                 {children}

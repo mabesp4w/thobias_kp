@@ -7,7 +7,6 @@ import transformDataWithFilters from "@/lib/transformDataWithFilters";
 import { columnsConfig, updateAccessorKeys } from "./columnsConfig";
 import useProducts from "@/store/crud/Products";
 import ProductsTypes from "@/types/Products";
-import { router } from "@inertiajs/react";
 
 // subjects
 type DeleteProps = {
@@ -74,10 +73,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
         nestedFilters
     );
 
-    const goToDetail = (row: ProductsTypes) => {
-        router.visit(`/admin/products/images/${row.id}`);
-    };
-
     return (
         <div className="flex-1 flex-col max-w-full h-full overflow-auto">
             {!isLoading ? (
@@ -91,7 +86,6 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
                     filters={nestedFilters.map(
                         (key) => `${key.split(".").join("_")}_filter`
                     )}
-                    onRowClick={goToDetail}
                 />
             ) : (
                 <div className="flex justify-center items-center h-full">

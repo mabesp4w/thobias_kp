@@ -1,3 +1,4 @@
+import ProductImagesTypes from "./ProductImages";
 import SubCategoriesTypes from "./SubCategories";
 
 // Products
@@ -8,5 +9,7 @@ export default interface ProductsTypes {
     slug: string;
     price: number;
     stock: number;
+    description: string;
     sub_category: SubCategoriesTypes;
+    product_image: ProductImagesTypes[];
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug');
             $table->integer('price');
             $table->integer('stock');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
