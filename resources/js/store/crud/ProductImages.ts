@@ -2,39 +2,45 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "../auth/login";
-import ProductsTypes from "@/types/Products";
-// store products
+import ProductImagesTypes from "@/types/ProductImages";
+// store productImages
 type Props = {
     page?: number;
     limit?: number;
     search?: string;
     sortby?: string;
     order?: string;
+    product_id?: number | string;
 };
 
 type Store = {
-    dtProducts: {
+    dtProductImages: {
         last_page: number;
         current_page: number;
-        data: ProductsTypes[];
+        data: ProductImagesTypes[];
     };
 
-    showProduct?: ProductsTypes;
-
-    setProducts: ({ page, limit, search, sortby, order }: Props) => Promise<{
+    setProductImages: ({
+        page,
+        limit,
+        search,
+        sortby,
+        order,
+        product_id,
+    }: Props) => Promise<{
         status: string;
         data?: {};
         error?: {};
     }>;
 
-    setShowProducts: (id: number | string) => Promise<{
+    setShowProductImages: (id: number | string) => Promise<{
         status: string;
         data?: {};
         error?: {};
     }>;
 
     addData: (
-        data: ProductsTypes
+        data: ProductImagesTypes
     ) => Promise<{ status: string; data?: any; error?: any }>;
 
     removeData: (
@@ -43,29 +49,30 @@ type Store = {
 
     updateData: (
         id: number | string,
-        data: ProductsTypes
+        data: ProductImagesTypes
     ) => Promise<{ status: string; data?: any; error?: any }>;
 };
 
-const useProducts = create(
+const useProductImages = create(
     devtools<Store>((set) => ({
-        dtProducts: {
+        dtProductImages: {
             last_page: 0,
             current_page: 0,
             data: [],
         },
-        setProducts: async ({
+        setProductImages: async ({
             page = 1,
             limit = 10,
             search,
             sortby,
             order,
+            product_id,
         }) => {
             try {
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
                     method: "get",
-                    url: `/products`,
+                    url: `/productImages`,
                     headers: { Authorization: `Bearer ${token}` },
                     params: {
                         limit,
@@ -73,13 +80,10 @@ const useProducts = create(
                         search,
                         sortby,
                         order,
+                        product_id,
                     },
                 });
-                set((state) => ({
-                    ...state,
-                    dtProducts: response.data,
-                }));
-                console.log({ response });
+                set((state) => ({ ...state, dtProductImages: response.data }));
                 return {
                     status: "berhasil",
                     data: response.data,
@@ -91,17 +95,17 @@ const useProducts = create(
                 };
             }
         },
-        setShowProducts: async (id) => {
+        setShowProductImages: async (id) => {
             try {
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
                     method: "get",
-                    url: `/products/${id}`,
+                    url: `/productImages/${id}`,
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 set((state) => ({
                     ...state,
-                    showProduct: response.data.data,
+                    dtProductImages: response.data.data,
                 }));
                 return {
                     status: "berhasil",
@@ -119,17 +123,21 @@ const useProducts = create(
                 const token = await useLogin.getState().setToken();
                 const res = await crud({
                     method: "post",
-                    url: `/products`,
+                    url: `/productImages`,
                     headers: {
                         Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
                     },
                     data: row,
                 });
                 set((prevState) => ({
-                    dtProducts: {
-                        last_page: prevState.dtProducts.last_page,
-                        current_page: prevState.dtProducts.current_page,
-                        data: [res.data.data, ...prevState.dtProducts.data],
+                    dtProductImages: {
+                        last_page: prevState.dtProductImages.last_page,
+                        current_page: prevState.dtProductImages.current_page,
+                        data: [
+                            res.data.data,
+                            ...prevState.dtProductImages.data,
+                        ],
                     },
                 }));
                 return {
@@ -148,14 +156,14 @@ const useProducts = create(
                 const token = await useLogin.getState().setToken();
                 const res = await crud({
                     method: "delete",
-                    url: `/products/${id}`,
+                    url: `/productImages/${id}`,
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 set((prevState) => ({
-                    dtProducts: {
-                        last_page: prevState.dtProducts.last_page,
-                        current_page: prevState.dtProducts.current_page,
-                        data: prevState.dtProducts.data.filter(
+                    dtProductImages: {
+                        last_page: prevState.dtProductImages.last_page,
+                        current_page: prevState.dtProductImages.current_page,
+                        data: prevState.dtProductImages.data.filter(
                             (item: any) => item.id !== id
                         ),
                     },
@@ -174,26 +182,32 @@ const useProducts = create(
         updateData: async (id, row) => {
             try {
                 const token = await useLogin.getState().setToken();
+
                 const response = await crud({
-                    method: "PUT",
-                    url: `/products/${id}`,
-                    headers: { Authorization: `Bearer ${token}` },
+                    method: "POST",
+                    url: `/productImages/${id}?_method=PUT`,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
                     data: row,
                 });
                 set((prevState) => ({
-                    dtProducts: {
-                        last_page: prevState.dtProducts.last_page,
-                        current_page: prevState.dtProducts.current_page,
-                        data: prevState.dtProducts.data.map((item: any) => {
-                            if (item.id === id) {
-                                return {
-                                    ...item,
-                                    ...response.data.data,
-                                };
-                            } else {
-                                return item;
+                    dtProductImages: {
+                        last_page: prevState.dtProductImages.last_page,
+                        current_page: prevState.dtProductImages.current_page,
+                        data: prevState.dtProductImages.data.map(
+                            (item: any) => {
+                                if (item.id === id) {
+                                    return {
+                                        ...item,
+                                        ...response.data.data,
+                                    };
+                                } else {
+                                    return item;
+                                }
                             }
-                        }),
+                        ),
                     },
                 }));
                 return {
@@ -210,4 +224,4 @@ const useProducts = create(
     }))
 );
 
-export default useProducts;
+export default useProductImages;

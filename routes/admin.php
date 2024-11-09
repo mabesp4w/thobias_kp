@@ -39,4 +39,9 @@ Route::group(['prefix' => 'products'], function () {
     Route::get('lists', function () {
         return Inertia::render('Admin/products/lists/Index');
     });
+    Route::get('images/{product_id}', function ($product_id) {
+        return Inertia::render('Admin/products/images/Index', [
+            'product_id' => $product_id
+        ]);
+    });
 });

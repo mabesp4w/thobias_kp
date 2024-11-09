@@ -83,7 +83,8 @@ class ProductController
      */
     public function show(string $id)
     {
-        //
+        $data = Product::with('subCategory.category')->find($id);
+        return new CrudResource('success', 'Data Product', $data);
     }
 
     /**

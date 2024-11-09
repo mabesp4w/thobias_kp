@@ -14,7 +14,7 @@ type ContextProps = {
 };
 
 const WelcomeContext = createContext<ContextProps>({
-    welcome: "SMA YPPK TARUNA DHARMA JAYAPURA",
+    welcome: "ERTA BEAUTY",
     setWelcome: () => {},
     title: "Default Title",
     setTitle: () => {},
@@ -23,9 +23,7 @@ const WelcomeContext = createContext<ContextProps>({
 });
 
 const WelcomeContextProvider: FC<Props> = ({ children }) => {
-    const [welcome, setWelcome] = useState<string>(
-        "SMA YPPK TARUNA DHARMA JAYAPURA"
-    );
+    const [welcome, setWelcome] = useState<string>("ERTA BEAUTY");
     const [title, setTitle] = useState<string>("Default Title");
     const [description, setDescription] = useState<string>(
         "Default Description"

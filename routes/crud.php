@@ -10,4 +10,5 @@ Route::resources([
     'categories' => \App\Http\Controllers\CRUD\CategoryController::class,
     'subCategories' => \App\Http\Controllers\CRUD\SubCategoryController::class,
     'products' => \App\Http\Controllers\CRUD\ProductController::class,
+    'productImages' => \App\Http\Controllers\CRUD\ProductImageController::class,
 ]);

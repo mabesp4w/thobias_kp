@@ -27,9 +27,15 @@ type DataTableProps<T> = {
     data: T[];
     columns: ColumnDef<T>[];
     filters: any[];
+    onRowClick?: (rowData: T) => void; // Tambahkan properti onRowClick opsional
 };
 
-export function DataTable<T>({ data, columns, filters }: DataTableProps<T>) {
+export function DataTable<T>({
+    data,
+    columns,
+    filters,
+    onRowClick,
+}: DataTableProps<T>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
@@ -104,7 +110,17 @@ export function DataTable<T>({ data, columns, filters }: DataTableProps<T>) {
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id}>
+                                <TableRow
+                                    key={row.id}
+                                    className={
+                                        onRowClick
+                                            ? "cursor-pointer hover:bg-muted"
+                                            : ""
+                                    }
+                                    onClick={() =>
+                                        onRowClick && onRowClick(row.original)
+                                    } // Panggil onRowClick saat baris diklik
+                                >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
                                             {flexRender(

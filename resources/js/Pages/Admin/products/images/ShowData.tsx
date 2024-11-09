@@ -5,9 +5,10 @@ import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import { generateColumns } from "@/lib/generateColumns";
 import transformDataWithFilters from "@/lib/transformDataWithFilters";
 import { columnsConfig, updateAccessorKeys } from "./columnsConfig";
-import useProducts from "@/store/crud/Products";
-import ProductsTypes from "@/types/Products";
-import { router } from "@inertiajs/react";
+import useProductImages from "@/store/crud/ProductImages";
+import LightPlugins from "@/components/lightBox/LightPlugins";
+import lightImgDB from "@/components/lightBox/lightImgDB";
+import { usePage } from "@inertiajs/react";
 
 // subjects
 type DeleteProps = {
@@ -19,79 +20,91 @@ type Props = {
     setEdit: (row: any) => void;
 };
 
-// products
+// productImages
 const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
+    const { product_id } = usePage().props;
     // store
-    const { setProducts, dtProducts } = useProducts();
+    const { setProductImages, dtProductImages } = useProductImages();
     // state
     const [limit, setLimit] = useState<number>(10);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [indexBox, setIndexBox] = useState<number>(-1);
+    const [showSlides, setShowSlides] = useState<never>();
     // params
     const params = new URLSearchParams(window.location.search);
     const search = params.get("cari") || "";
     const sortby = params.get("sortby") || "";
     const order = params.get("order") || "";
     // Define the debounced function outside of `useCallback`
-    const debouncedFetchProducts = _.debounce((fetchProducts) => {
-        fetchProducts();
+    const debouncedFetchProductImages = _.debounce((fetchProductImages) => {
+        fetchProductImages();
     }, 500); // 500ms delay
 
-    const fetchProducts = useCallback(async () => {
+    const fetchProductImages = useCallback(async () => {
         setLimit(10);
-        await setProducts({
+        await setProductImages({
             limit,
             search,
             sortby,
             order,
+            product_id: product_id as string,
         });
         setIsLoading(false);
-    }, [setProducts, limit, search, sortby, order]);
+    }, [setProductImages, limit, search, sortby, order]);
 
     useEffect(() => {
-        debouncedFetchProducts(fetchProducts);
+        debouncedFetchProductImages(fetchProductImages);
 
         // Cleanup debounce
         return () => {
-            debouncedFetchProducts.cancel();
+            debouncedFetchProductImages.cancel();
         };
     }, [search, sortby, order, limit]);
 
+    useEffect(() => {
+        setShowSlides(
+            lightImgDB({
+                data: dtProductImages?.data,
+                picture: "product_img",
+                title: { path: "position" },
+                description: { path: "" },
+                width: 3840,
+                height: 5760,
+            })
+        );
+    }, [dtProductImages?.data]);
+
     // Panggil fungsi dengan data dan filter yang diinginkan
-    const nestedFilters = [
-        "row.original.sub_category.category.category_nm",
-        "sub_category.sub_category_nm",
-        "product_nm",
-        "product_price",
-        "product_stock",
-    ];
+    const nestedFilters = ["position"];
     const transformedData = transformDataWithFilters(
-        dtProducts.data,
+        dtProductImages.data,
         nestedFilters
     );
     // Buat konfigurasi kolom dengan accessorKey yang diperbarui
     const updatedColumnsConfig = updateAccessorKeys(
-        columnsConfig,
+        columnsConfig({ setIndexBox }),
         nestedFilters
     );
 
-    const goToDetail = (row: ProductsTypes) => {
-        router.visit(`/admin/products/images/${row.id}`);
-    };
-
     return (
         <div className="flex-1 flex-col max-w-full h-full overflow-auto">
+            {/* lightBox */}
+            <LightPlugins
+                index={indexBox}
+                setIndex={setIndexBox}
+                slides={showSlides}
+            />
             {!isLoading ? (
                 <DataTable
                     data={transformedData}
-                    columns={generateColumns<ProductsTypes>(
-                        updatedColumnsConfig,
+                    columns={generateColumns(
+                        updatedColumnsConfig as any,
                         setEdit,
                         (rowId) => setDelete({ id: rowId, isDelete: false })
                     )}
                     filters={nestedFilters.map(
                         (key) => `${key.split(".").join("_")}_filter`
                     )}
-                    onRowClick={goToDetail}
                 />
             ) : (
                 <div className="flex justify-center items-center h-full">
