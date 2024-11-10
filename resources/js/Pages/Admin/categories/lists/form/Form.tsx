@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { DialogFooter } from "@/components/ui/dialog";
 import submitData from "@/services/submitData";
 import useCategories from "@/store/crud/Categories";
-import { CategoriesTypes } from "@/types/Categories";
+import CategoriesTypes from "@/types/Categories";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import BodyForm from "./BodyForm";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";

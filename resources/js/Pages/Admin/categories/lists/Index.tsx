@@ -3,7 +3,7 @@ import ShowData from "./ShowData";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Form from "./form/Form";
-import { CategoriesTypes } from "@/types/Categories";
+import CategoriesTypes from "@/types/Categories";
 import { Toaster } from "@/components/ui/toaster";
 import useCategories from "@/store/crud/Categories";
 import { showToast } from "@/lib/showToast";

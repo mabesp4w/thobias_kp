@@ -13,8 +13,8 @@ const setUsersMenus = async () => {
             icon: <BsHouseDoor />,
         },
         {
-            name: "Women",
-            href: createUrl("/announcements"),
+            name: "Wome Collection",
+            href: createUrl("products"),
             icon: <BsActivity />,
         },
         {
