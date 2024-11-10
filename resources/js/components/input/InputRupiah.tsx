@@ -46,7 +46,6 @@ const InputRupiah: FC<Props> = ({
                             prefix={"Rp. "}
                             value={field.value} // Menggunakan field.value sebagai nilai default
                             onValueChange={(values, sourceInfo) => {
-                                console.log(values, sourceInfo);
                                 // Setel nilai pada react-hook-form
                                 field.onChange(values.floatValue || ""); // Gunakan values.floatValue jika tersedia
                             }}

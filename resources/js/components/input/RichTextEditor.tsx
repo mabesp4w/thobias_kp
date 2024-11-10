@@ -49,6 +49,7 @@ type Props = {
     initialValue?: string;
     disabled?: boolean;
     labelCss?: string;
+    watch: any;
 };
 
 const RichTextEditor: FC<Props> = ({
@@ -61,9 +62,11 @@ const RichTextEditor: FC<Props> = ({
     initialValue = "",
     setValue,
     labelCss = "text-gray-700",
+    watch,
 }) => {
     const [editorLoaded, setEditorLoaded] = useState(false);
     const editorRef = useRef<typeof CKEditor | null>(null);
+    const editorInstanceRef = useRef(null);
 
     useEffect(() => {
         import("@ckeditor/ckeditor5-react").then((mod) => {
@@ -76,6 +79,17 @@ const RichTextEditor: FC<Props> = ({
         // Set initial value on first render
         setValue(name, initialValue || "");
     }, [name, initialValue, setValue]);
+
+    const watchValue = watch(name);
+
+    useEffect(() => {
+        if (!watchValue) {
+            if (editorInstanceRef.current) {
+                // @ts-ignore
+                editorInstanceRef.current.setData(""); // Kosongkan isi editor
+            }
+        }
+    }, [watchValue]);
 
     const config = {
         plugins: [
@@ -222,6 +236,10 @@ const RichTextEditor: FC<Props> = ({
                             onChange={(_, editor) =>
                                 field.onChange(editor.getData())
                             }
+                            onReady={(editor) => {
+                                // @ts-ignore
+                                editorInstanceRef.current = editor; // Simpan instance editor
+                            }}
                         />
                     )}
                 />

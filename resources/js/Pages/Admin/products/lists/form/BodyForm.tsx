@@ -23,6 +23,7 @@ const BodyForm: FC<Props> = ({
     control,
     setValue,
     dtEdit,
+    watch,
 }) => {
     // store
     const { setSubCategories, dtSubCategories } = useSubCategories();
@@ -90,10 +91,9 @@ const BodyForm: FC<Props> = ({
                 name="description"
                 label="Deskripsi"
                 addClass="col-span-8"
-                required
-                errors={errors.description as any}
                 initialValue={dtEdit?.description || ""}
                 setValue={setValue}
+                watch={watch}
             />
         </>
     );

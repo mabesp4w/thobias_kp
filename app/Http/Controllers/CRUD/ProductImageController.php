@@ -26,14 +26,14 @@ class ProductImageController
             $required = "required";
         }
         $rules = [
-            'product_img' => "$required|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
+            'product_img.*' => "$required|nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
         ];
 
         $messages = [
             'product_img.required' => 'Foto harus diisi.',
-            'product_img.image' => 'File harus berupa gambar.',
-            'product_img.mimes' => 'File harus berupa jpeg,png,jpg,gif,svg.',
-            'product_img.max' => 'File maksimal 2MB.',
+            'product_img.*.image' => 'Setiap file harus berupa gambar.',
+            'product_img.*.mimes' => 'File harus berupa jpeg, png, jpg, gif, svg.',
+            'product_img.*.max' => 'File maksimal 2MB.',
             'position.unique' => 'Posisi sudah ada.',
         ];
         $validator = Validator::make($request, $rules, $messages);
@@ -56,7 +56,7 @@ class ProductImageController
         $order = $request->order;
         $product_id = $request->product_id;
         $data = ProductImage::where('product_id', $product_id)
-            ->orderBy($sortby ?? 'created_at', $order ?? 'desc')
+            ->orderBy($sortby ?? 'position', $order ?? 'asc')
             ->get();
         return new CrudResource('success', 'Data ProductImage', $data);
     }
@@ -85,19 +85,26 @@ class ProductImageController
         try {
             // export foto
             if ($request->hasFile('product_img')) {
-                $product_img = $this->imgController->addImage('product_img', $data_req['product_img']);
-                // jika foto gagal di upload
-                if (!$product_img) {
-                    DB::rollback();
-                    return new CrudResource('error', 'Gagal Upload Foto', null);
-                }
-                $data_req['product_img'] = "storage/$product_img";
-            }
+                foreach ($request->file('product_img') as $file) {
+                    // Simpan setiap gambar ke storage
+                    $product_img = $this->imgController->addImage('product_img', $file);
 
-            // add data
-            ProductImage::create($data_req);
+                    // Jika gagal upload, rollback transaksi dan kirim pesan error
+                    if (!$product_img) {
+                        DB::rollback();
+                        return new CrudResource('error', 'Gagal Upload Foto', null);
+                    }
+
+                    // Buat entri baru di ProductImage untuk setiap gambar
+                    ProductImage::create([
+                        'position' => $data_req['position'],
+                        'product_id' => $data_req['product_id'],
+                        'product_img' => "storage/$product_img",
+                    ]);
+                }
+            }
             // get last data
-            $data = ProductImage::latest()->first();
+            $data = ProductImage::latest()->get();
             // add options
             DB::commit();
             return new CrudResource('success', 'Data Berhasil Disimpan', $data);
@@ -154,9 +161,15 @@ class ProductImageController
                 if ($product_img) {
                     File::delete($product_img);
                 }
-                $product_img = $this->imgController->addImage('product_img', $data_req['product_img']);
-                if (!$product_img) {
-                    return new CrudResource('error', 'Gagal Upload Product_img', null);
+                foreach ($request->file('product_img') as $file) {
+                    // Simpan setiap gambar ke storage
+                    $product_img = $this->imgController->addImage('product_img', $file);
+
+                    // Jika gagal upload, rollback transaksi dan kirim pesan error
+                    if (!$product_img) {
+                        DB::rollback();
+                        return new CrudResource('error', 'Gagal Upload Foto', null);
+                    }
                 }
                 $data_req['product_img'] = "storage/$product_img";
             } else {

@@ -37,7 +37,6 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
     // reset form
     const resetForm = () => {
         setValue("id", "");
-        setValue("category_id", "");
         setValue("sub_category_nm", "");
     };
 

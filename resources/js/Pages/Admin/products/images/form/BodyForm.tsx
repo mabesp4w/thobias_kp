@@ -1,4 +1,4 @@
-import InputFile from "@/components/input/InputFile";
+import InputMultiFiles from "@/components/input/InputMultiFiles";
 import InputTextDefault from "@/components/input/InputTextDefault";
 import ProductImagesTypes from "@/types/ProductImages";
 import { FC } from "react";
@@ -26,7 +26,7 @@ const BodyForm: FC<Props> = ({ register, errors, setValue, watch, dtEdit }) => {
                 errors={errors.position}
                 addClass="col-span-8"
             />
-            <InputFile
+            <InputMultiFiles
                 label="Gambar"
                 name="product_img"
                 register={register}
@@ -34,7 +34,7 @@ const BodyForm: FC<Props> = ({ register, errors, setValue, watch, dtEdit }) => {
                 setValue={setValue}
                 required={!dtEdit?.product_img}
                 errors={errors.product_img}
-                fileEdit={dtEdit?.product_img}
+                fileEdit={[dtEdit?.product_img]}
                 initialValue={dtEdit?.product_img || ""}
                 watch={watch}
                 accept={"image/*"}

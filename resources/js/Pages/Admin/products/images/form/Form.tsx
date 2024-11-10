@@ -40,7 +40,7 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
     const resetForm = () => {
         setValue("id", "");
         setValue("product_id", product_id as string);
-        setValue("position", 1);
+        setValue("position", 2);
         setValue("product_img", "");
     };
 
@@ -48,8 +48,8 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
     useEffect(() => {
         if (dtEdit) {
             setValue("id", dtEdit.id);
+            setValue("product_id", dtEdit.product_id);
             setValue("position", dtEdit.position);
-            setValue("product_img", "");
         } else {
             resetForm();
         }

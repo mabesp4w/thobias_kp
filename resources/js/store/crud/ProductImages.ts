@@ -130,14 +130,12 @@ const useProductImages = create(
                     },
                     data: row,
                 });
+                console.log({ res });
                 set((prevState) => ({
                     dtProductImages: {
                         last_page: prevState.dtProductImages.last_page,
                         current_page: prevState.dtProductImages.current_page,
-                        data: [
-                            res.data.data,
-                            ...prevState.dtProductImages.data,
-                        ],
+                        data: res.data.data,
                     },
                 }));
                 return {

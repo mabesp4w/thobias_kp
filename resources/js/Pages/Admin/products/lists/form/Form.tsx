@@ -41,6 +41,7 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
         setValue("product_nm", "");
         setValue("price", 0);
         setValue("stock", 0);
+        setValue("description", "");
     };
 
     // data edit
@@ -51,6 +52,7 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
             setValue("product_nm", dtEdit.product_nm);
             setValue("price", dtEdit.price);
             setValue("stock", dtEdit.stock);
+            setValue("description", dtEdit.description);
         } else {
             resetForm();
         }

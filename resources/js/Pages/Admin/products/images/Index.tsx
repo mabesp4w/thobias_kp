@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Form from "./form/Form";
 import { Toaster } from "@/components/ui/toaster";
 import { showToast } from "@/lib/showToast";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import DeleteDialog from "@/components/dialog/DeleteDialog";
 import ProductImagesTypes from "@/types/ProductImages";
 import useProductImages from "@/store/crud/ProductImages";
@@ -78,6 +78,12 @@ const Index = () => {
                     </Button>
                 </div>
                 {/* form */}
+                <Link
+                    href="/admin/products/lists"
+                    className="underline text-secondary hover:no-underline cursor-pointer w-fit"
+                >
+                    Kembali
+                </Link>
                 <Form
                     openDialog={openDialog}
                     setOpenDialog={setOpenDialog}
