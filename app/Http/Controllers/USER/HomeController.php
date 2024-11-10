@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Banner;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController
 {
@@ -17,9 +18,19 @@ class HomeController
             ->orderBy('created_at', 'desc')
             ->take(8)
             ->get();
+        // bestSeller
+        $bestSeller =
+            Product::leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+            ->with(['subCategory.category', 'productImage'])
+            ->select('products.*', DB::raw('COALESCE(SUM(order_items.qty), 0) as total_ordered'))
+            ->groupBy('products.id')
+            ->orderByDesc('total_ordered')
+            ->take(8)
+            ->get();
         return Inertia::render('User/home/Welcome', [
             'banners' => $banners,
-            'newProduct' => $newProduct
+            'newProduct' => $newProduct,
+            'bestSeller' => $bestSeller
         ]);
     }
 }

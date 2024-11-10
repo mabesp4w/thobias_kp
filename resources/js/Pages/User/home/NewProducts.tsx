@@ -1,20 +1,16 @@
 import ProductsTypes from "@/types/Products";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import "./style.css";
 
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import useWindowWidth from "@/lib/windowWidth";
+import { BASE_URL } from "@/services/baseURL";
+import showRupiah from "@/lib/rupiah";
+import { Button } from "@/components/ui/button";
+import { router } from "@inertiajs/react";
 
 interface Props {
     newProduct: ProductsTypes[];
@@ -24,12 +20,33 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
     if (!newProduct.length) return null;
     const [currentSlide, setCurrentSlide] = useState(0);
     const [loaded, setLoaded] = useState(false);
+    const [perView, setPerView] = useState(4);
+    const windowWidth = useWindowWidth();
+    console.log({ windowWidth });
+
+    useEffect(() => {
+        if (windowWidth > 1100) {
+            return setPerView(5);
+        }
+        if (windowWidth > 1000) {
+            return setPerView(4);
+        }
+        if (windowWidth > 700) {
+            return setPerView(2);
+        }
+        if (windowWidth < 500) {
+            return setPerView(1);
+        }
+
+        return () => {};
+    }, [windowWidth]);
+
     const [sliderRef, instanceRef] = useKeenSlider(
         {
             loop: true,
             mode: "free-snap",
             slides: {
-                perView: 4,
+                perView,
                 spacing: 5,
             },
 
@@ -74,41 +91,59 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
     return (
         <section>
             <div ref={sliderRef} className="h-fit flex overflow-hidden mx-5">
-                {newProduct.map((product) => (
-                    <Card
-                        className="w-[350px] keen-slider__slide"
-                        key={product.id}
-                    >
-                        <CardHeader>
-                            <CardTitle>Create project</CardTitle>
-                            <CardDescription>
-                                Deploy your new project in one-click.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <form>
-                                <div className="grid w-full items-center gap-4">
-                                    <div className="flex flex-col space-y-1.5">
-                                        <Label htmlFor="name">Name</Label>
-                                        <Input
-                                            id="name"
-                                            placeholder="Name of your project"
-                                        />
-                                    </div>
-                                    <div className="flex flex-col space-y-1.5">
-                                        <Label htmlFor="framework">
-                                            Framework
-                                        </Label>
-                                    </div>
-                                </div>
-                            </form>
-                        </CardContent>
-                        <CardFooter className="flex justify-between">
-                            <Button variant="outline">Cancel</Button>
-                            <Button>Deploy</Button>
-                        </CardFooter>
-                    </Card>
-                ))}
+                {newProduct.map((product) => {
+                    const { product_nm, price, sub_category, product_image } =
+                        product;
+                    const imgSrc = product_image?.[0]?.product_img;
+                    return (
+                        <Card
+                            className="md:w-[300px] w-[200px] keen-slider__slide flex flex-col gap-y-4 border-none shadow-none cursor-pointer z-10"
+                            key={product.id}
+                            onClick={() => {
+                                router.visit(`/products/detail/${product.id}`);
+                            }}
+                        >
+                            <CardContent
+                                className="relative flex flex-col items-center justify-center group overflow-hidden"
+                                style={{
+                                    height: "200px",
+                                }}
+                            >
+                                {/* Background image as pseudo-element */}
+                                <div
+                                    className="absolute inset-0 transition-transform duration-700 ease-in-out scale-100 group-hover:scale-125 z-0 bg-cover bg-center"
+                                    style={{
+                                        backgroundImage: `url(${
+                                            imgSrc
+                                                ? `${BASE_URL}/${imgSrc}`
+                                                : "/images/no_image.png"
+                                        })`,
+                                    }}
+                                ></div>
+                                <Button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log({ product });
+                                    }}
+                                    type="button"
+                                    className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"
+                                >
+                                    + Keranjang
+                                </Button>
+                            </CardContent>
+                            <CardFooter className="flex flex-col justify-start items-start p-0">
+                                <h3 className="text-sm font-bold">
+                                    {sub_category.category.category_nm}-
+                                    {sub_category.sub_category_nm}
+                                </h3>
+                                <h3>{product_nm}</h3>
+                                <h4 className="text-sm font-bold text-primary">
+                                    {showRupiah(price)}
+                                </h4>
+                            </CardFooter>
+                        </Card>
+                    );
+                })}
             </div>
             {loaded && instanceRef.current && (
                 <>
@@ -141,7 +176,7 @@ function Arrow(props: any) {
             {props.left && (
                 <div
                     onClick={props.onClick}
-                    className="absolute top-1/2 left-0 z-10 cursor-pointer border-2 rounded-full p-2 shadow-2xl"
+                    className="absolute select-none top-1/2 left-0 z-10 cursor-pointer border-2 rounded-full p-2 shadow-2xl"
                 >
                     <BsChevronLeft className="text-xl" />
                 </div>
@@ -149,7 +184,7 @@ function Arrow(props: any) {
             {!props.left && (
                 <div
                     onClick={props.onClick}
-                    className="absolute top-1/2 right-0 z-10 cursor-pointer border-2 rounded-full p-2 shadow-2xl"
+                    className="absolute select-none top-1/2 right-0 z-10 cursor-pointer border-2 rounded-full p-2 shadow-2xl"
                 >
                     <BsChevronRight className="text-xl" />
                 </div>

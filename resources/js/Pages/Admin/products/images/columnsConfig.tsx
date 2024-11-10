@@ -11,7 +11,7 @@ const columnsConfig = ({
     setIndexBox,
 }: ColumnsConfigProps): ColumnDef<ProductImagesTypes>[] => [
     {
-        header: "Kategori",
+        header: "No. Urut",
         cell: ({ row }) => (
             <div className="capitalize">{row.original.position}</div>
         ),

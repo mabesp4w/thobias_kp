@@ -104,7 +104,7 @@ class ProductImageController
                 }
             }
             // get last data
-            $data = ProductImage::latest()->get();
+            $data = ProductImage::where('product_id', $data_req['product_id'])->latest()->get();
             // add options
             DB::commit();
             return new CrudResource('success', 'Data Berhasil Disimpan', $data);
