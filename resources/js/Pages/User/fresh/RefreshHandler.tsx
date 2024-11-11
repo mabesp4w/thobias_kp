@@ -1,21 +1,24 @@
-import { Inertia } from "@inertiajs/inertia";
-import { usePage } from "@inertiajs/react";
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import { router } from "@inertiajs/react";
 import { useEffect } from "react";
 
-const RefreshHandler = () => {
-    const { props } = usePage();
-
+const RefreshHandler = ({ url }: any) => {
+    console.log("refresh");
+    console.log({ url });
     useEffect(() => {
-        if (window.history.length > 1) {
-            // Ada halaman sebelumnya
-            window.history.back();
-        } else {
-            // Tidak ada riwayat halaman sebelumnya
-            setTimeout(() => Inertia.visit("/"), 50); // Redirect ke halaman utama
+        if (url !== "home") {
+            setTimeout(() => router.visit(`/${url}`), 1500);
+        }
+        if (url === "home") {
+            setTimeout(() => router.visit("/"), 1500);
         }
     }, []);
 
-    return null;
+    return (
+        <div className="flex items-center justify-center h-screen w-full">
+            <LoadingSpiner />
+        </div>
+    );
 };
 
 export default RefreshHandler;

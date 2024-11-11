@@ -1,7 +1,6 @@
 /** @format */
 import React, { FC, useEffect, useRef, useState } from "react";
 import ScrollReveal from "scrollreveal";
-import LoadingSpiner from "../loading/LoadingSpiner";
 
 interface Props {
     children: React.ReactNode;
@@ -41,38 +40,25 @@ const ScrollRevealComponent: FC<Props> = ({
     const myRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (myRef.current) {
-            setTimeout(() => {
-                // Menyembunyikan loading setelah render pertama
-                setIsRefreshing(false);
-            }, 100);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (!isRefreshing) {
-            // Pastikan ScrollReveal hanya berjalan jika halaman tidak dalam status loading
-            ScrollReveal().reveal(`.${selectorClass}`, {
-                duration: duration,
-                distance: distance,
-                easing: easing || "ease-in-out",
-                origin: origin || "bottom",
-                reset: reset,
-                viewFactor: viewFactor,
-                viewOffset: viewOffset,
-                delay: delay,
-                interval: interval,
-                scale: scale,
-                rotate: rotate,
-            });
-        }
+        ScrollReveal().reveal(`.${selectorClass}`, {
+            duration: duration,
+            distance: distance,
+            easing: easing || "ease-in-out",
+            origin: origin || "bottom",
+            reset: reset,
+            viewFactor: viewFactor,
+            viewOffset: viewOffset,
+            delay: delay,
+            interval: interval,
+            scale: scale,
+            rotate: rotate,
+        });
     }, [
         delay,
         distance,
         duration,
         easing,
         interval,
-        isRefreshing, // Tambahkan dependensi ini
         origin,
         reset,
         rotate,
@@ -84,7 +70,7 @@ const ScrollRevealComponent: FC<Props> = ({
 
     return (
         <div ref={myRef} className={`${selectorClass} ${className}`}>
-            {isRefreshing ? <LoadingSpiner /> : children}
+            {children}
         </div>
     );
 };

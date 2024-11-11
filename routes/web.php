@@ -7,6 +7,8 @@ Route::get('/', [App\Http\Controllers\USER\HomeController::class, 'index'])->nam
 Route::get('products', function () {
     return Inertia::render('User/products/Index');
 });
-Route::get('refresh', function () {
-    return Inertia::render('User/fresh/RefreshHandler');
+Route::get('/refresh/{url}', function ($url) {
+    return Inertia::render('User/fresh/RefreshHandler', [
+        'url' => $url
+    ]);
 });
