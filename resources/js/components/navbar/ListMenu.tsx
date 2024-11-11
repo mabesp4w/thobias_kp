@@ -26,7 +26,7 @@ const setUsersMenus = async () => {
 
     categories.forEach((category: CategoriesTypes) => {
         const subCategory = category?.sub_category;
-        if (subCategory) {
+        if (subCategory.length > 0) {
             ListMenu.push({
                 name: category.category_nm,
                 slug: category.slug,
@@ -34,14 +34,9 @@ const setUsersMenus = async () => {
                 subMenus: subCategory.map((sub: SubCategoriesTypes) => {
                     return {
                         name: sub.sub_category_nm,
-                        href: createUrl(`${category.slug}/${sub.slug}`),
+                        href: createUrl(`products/${category.slug}/${sub.id}`),
                     };
                 }),
-            });
-        } else {
-            ListMenu.push({
-                name: category.category_nm,
-                href: createUrl(`/categories/${category.slug}`),
             });
         }
     });

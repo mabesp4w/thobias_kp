@@ -1,56 +1,107 @@
 import ScrollRevealComponent from "@/components/effects/ScrollRevealComponent";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import showRupiah from "@/lib/rupiah";
+import { BASE_URL } from "@/services/baseURL";
+import ProductsTypes from "@/types/Products";
+import SubCategoriesTypes from "@/types/SubCategories";
+import { Head, router } from "@inertiajs/react";
+import { FC } from "react";
 
-type Props = {};
+type Props = {
+    products: {
+        last_page: number;
+        current_page: number;
+        data: ProductsTypes[];
+    };
+    subCategory: SubCategoriesTypes;
+};
 
-const Index = (props: Props) => {
+const Index: FC<Props> = ({ products, subCategory }) => {
+    console.log({ subCategory });
+    console.log({ products });
     return (
-        <div className="container">
-            <h1>Products</h1>
-            <ScrollRevealComponent>
-                <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Labore maxime fugiat dolore? Perferendis, velit. Autem
-                    magnam a laborum adipisci provident amet perferendis minus
-                    nihil dolorum? In dolor quasi debitis corporis. Quaerat
-                    eligendi omnis perferendis ab, aliquid odit ipsam magnam
-                    expedita cumque nostrum voluptas sed voluptatum consectetur
-                    nesciunt dolores culpa possimus dolorum molestias officia
-                    maiores! Eaque ullam harum sint aliquid libero? Cum
-                    obcaecati at assumenda recusandae vitae in, praesentium
-                    natus dolores odio quibusdam, maxime beatae aut aliquam
-                    dolore perspiciatis repellat nostrum tempore eius provident
-                    quaerat aspernatur magnam. Dignissimos possimus cumque
-                    quaerat! Eos quia autem corporis assumenda cumque facere
-                    repudiandae eaque magni explicabo sequi dolorum, neque
-                    voluptate ratione harum quam veniam ipsum dolore enim,
-                    aliquam odit at quidem mollitia voluptatem praesentium.
-                    Omnis. Incidunt dignissimos sed pariatur commodi unde
-                    consequatur quam aperiam illo, impedit earum illum
-                    perspiciatis. Vitae, similique. Repellat, facere quidem
-                    voluptatem delectus quibusdam incidunt excepturi. Fugit
-                    facilis quis pariatur quam doloremque? Accusantium quibusdam
-                    eos deserunt? Culpa voluptates, eaque aliquid sunt alias, in
-                    atque nihil provident assumenda voluptatem eum dolor odit
-                    tempore maiores officia cum non voluptatibus dolore,
-                    reprehenderit quas qui a! Sequi neque recusandae quis at
-                    nostrum quasi porro officiis eos, amet temporibus fugiat
-                    vitae voluptate ipsum corrupti iusto suscipit assumenda
-                    impedit, cum aliquam ad sapiente id ea! Ipsa, vitae sequi? A
-                    quod voluptates quisquam laboriosam nostrum, ducimus laborum
-                    blanditiis aut eveniet natus tempore perferendis enim! Non,
-                    est. Non, commodi sit aperiam qui, eum, aut quae et nisi hic
-                    necessitatibus perferendis. Recusandae eum esse expedita,
-                    dolores provident explicabo omnis distinctio tempora.
-                    Recusandae voluptate aliquam omnis aut maiores a vel
-                    repudiandae quam debitis. Mollitia porro voluptas dolorum
-                    tempora maxime laboriosam ipsa sint. Iusto quibusdam unde
-                    vitae at sapiente dolorum impedit exercitationem quis. Vel
-                    maiores voluptatibus culpa? Repellendus nulla voluptatibus
-                    eius odio, voluptatem expedita aspernatur cum iure assumenda
-                    esse vitae quam consectetur! Provident?
-                </p>
-            </ScrollRevealComponent>
-        </div>
+        <>
+            <Head
+                title={`${subCategory.sub_category_nm} | ${subCategory.category.category_nm}`}
+            />
+            <div className="container mt-10">
+                <ScrollRevealComponent
+                    animations="fade-down"
+                    delay={500}
+                    duration={500}
+                    className="text-primary"
+                >
+                    <h3 className="text-center text-lg font-bold">
+                        {subCategory.category.category_nm}
+                    </h3>
+                    <h4 className="text-center text-xl font-bold">
+                        {subCategory.sub_category_nm}
+                    </h4>
+                </ScrollRevealComponent>
+                <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 my-6">
+                    {products?.data &&
+                        products?.data.map((product) => {
+                            const { product_nm, price, product_image } =
+                                product;
+                            const imgSrc = product_image?.[0]?.product_img;
+                            return (
+                                <ScrollRevealComponent
+                                    key={product.id}
+                                    offset={100}
+                                >
+                                    <Card
+                                        className="flex flex-col gap-y-4 border-none shadow-none cursor-pointer z-10"
+                                        onClick={() => {
+                                            router.visit(
+                                                `/products/detail/${product.id}`
+                                            );
+                                        }}
+                                    >
+                                        <CardContent
+                                            className="relative flex flex-col items-center justify-center group overflow-hidden"
+                                            style={{
+                                                height: "200px",
+                                            }}
+                                        >
+                                            {/* Background image as pseudo-element */}
+                                            <div
+                                                className="absolute inset-0 transition-transform duration-700 ease-in-out scale-100 group-hover:scale-125 z-0 bg-cover bg-center"
+                                                style={{
+                                                    backgroundImage: `url(${
+                                                        imgSrc
+                                                            ? `${BASE_URL}/${imgSrc}`
+                                                            : "/images/no_image.png"
+                                                    })`,
+                                                }}
+                                            ></div>
+                                            <Button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    console.log({ product });
+                                                }}
+                                                type="button"
+                                                className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"
+                                            >
+                                                + Keranjang
+                                            </Button>
+                                        </CardContent>
+                                        <CardFooter className="flex flex-col justify-start items-start p-0">
+                                            <h3>{product_nm}</h3>
+                                            <h4 className="text-sm font-bold text-primary">
+                                                {showRupiah(price)}
+                                            </h4>
+                                        </CardFooter>
+                                    </Card>
+                                </ScrollRevealComponent>
+                            );
+                        })}
+                    {products && products.data.length === 0 && (
+                        <h3>Produk tidak ditemukan</h3>
+                    )}
+                </section>
+            </div>
+        </>
     );
 };
 

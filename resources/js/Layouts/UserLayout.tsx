@@ -1,4 +1,5 @@
 import LuxyWrapper from "@/components/effects/LuxyWrapper";
+import FooterComp from "@/components/footer/FooterComp";
 import HeaderComp from "@/components/header/HeaderComp";
 import { FC, ReactNode } from "react";
 
@@ -16,7 +17,7 @@ const UserLayout: FC<Props> = ({ children }) => {
             <main className="flex grow mb-10 -mt-6 overflow-auto">
                 {children}
             </main>
-            <footer>User Footer</footer>
+            <FooterComp />
         </LuxyWrapper>
     );
 };
