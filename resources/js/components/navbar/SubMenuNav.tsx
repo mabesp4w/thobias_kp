@@ -46,13 +46,13 @@ const SubMenu: FC<Props> = ({ subMenus, addClass }) => {
                         exit="exit"
                         variants={variants}
                         transition={{ delay: index * 0.1 }}
-                        className={`relative text-nowrap bg-white`}
+                        className={`relative text-nowrap bg-white list-none -mx-5`}
                     >
                         <Link
                             href={item.href || "#"}
                             className={`flex items-center ${
                                 isActive ? "text-primary font-bold" : ""
-                            } block py-2 px-4 text-accent hover:text-primary hover:font-bold transition-colors duration-300 whitespace-nowrap text-[13px]`}
+                            } block py-2 px-4 text-black hover:text-primary hover:font-bold transition-colors duration-300 whitespace-nowrap text-[13px]`}
                         >
                             <span>{item.name}</span>
                             {item.subMenus && (
