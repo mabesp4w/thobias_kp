@@ -1,11 +1,17 @@
 /** @format */
+import { BASE_URL } from "@/services/baseURL";
 import MenuTypes from "@/types/MenuTypes";
+import axios from "axios";
 
-import { BsActivity, BsHouseDoor, BsNewspaper, BsPerson } from "react-icons/bs";
+import { BsActivity, BsHouseDoor, BsPerson } from "react-icons/bs";
 
 const createUrl = (path: string) => `/${path}`;
 
 const setUsersMenus = async () => {
+    // fetch categories from api axios
+    const res = await axios.get(`${BASE_URL}/api/categories`);
+    const categories = await res.data.data;
+
     const ListMenu: MenuTypes[] = [
         {
             name: "Home",
@@ -47,11 +53,6 @@ const setUsersMenus = async () => {
                     href: createUrl("/galleries/videos"),
                 },
             ],
-        },
-        {
-            name: "Man",
-            href: createUrl("/news"),
-            icon: <BsNewspaper />,
         },
     ];
 

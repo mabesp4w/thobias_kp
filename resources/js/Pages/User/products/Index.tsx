@@ -6,7 +6,7 @@ const Index = (props: Props) => {
     return (
         <div className="container">
             <h1>Products</h1>
-            <ScrollRevealComponent selectorClass="test-1">
+            <ScrollRevealComponent>
                 <p>
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                     Labore maxime fugiat dolore? Perferendis, velit. Autem

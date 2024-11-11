@@ -20,4 +20,9 @@ class Category extends Model
             $category->slug = Str::slug($category->category_nm);
         });
     }
+
+    public function subCategory()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
 }
