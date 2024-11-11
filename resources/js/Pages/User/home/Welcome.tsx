@@ -1,9 +1,9 @@
 import BannersTypes from "@/types/Banners";
 import { Head } from "@inertiajs/react";
-import Banners from "./Banners";
 import ProductsTypes from "@/types/Products";
-import NewProducts from "./NewProducts";
 import ScrollRevealComponent from "@/components/effects/ScrollRevealComponent";
+import NewProducts from "./NewProducts";
+import Banners from "./Banners";
 
 interface Props {
     banners: BannersTypes[];
@@ -15,7 +15,7 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
     return (
         <>
             <Head title="Home" />
-            <main className="grow flex flex-col -mt-6 gap-y-16">
+            <main className="grow flex flex-col gap-y-16">
                 <Banners banners={banners} />
                 {/* best seller */}
                 <ScrollRevealComponent
@@ -31,15 +31,15 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                 <section className="grid grid-cols-3 lg:gap-x-28 gap-x-2 container my-10">
                     {/* original */}
                     <ScrollRevealComponent
-                        className="flex gap-x-2"
-                        animations="slide-right"
+                        className="flex flex-col md:flex-row justify-center items-center gap-x-2"
+                        animations="slide-left"
                     >
                         <img src="/images/secure.svg" alt="" className="w-20" />
                         <div>
-                            <h3 className="text-lg font-bold ">
+                            <h3 className="md:text-lg text-center text-sm font-bold">
                                 Asli & 100% BPOM
                             </h3>
-                            <p>
+                            <p className="hidden md:block">
                                 Belanja produk kecantikan pasti asli dan
                                 bersertifikasi BPOM.
                             </p>
@@ -47,15 +47,15 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                     </ScrollRevealComponent>
                     {/* Beuty Everyday */}
                     <ScrollRevealComponent
-                        className="flex gap-x-2"
+                        className="flex flex-col md:flex-row justify-center items-center gap-x-2"
                         animations="zoom-out-down"
                     >
                         <img src="/images/love.svg" alt="" className="w-20" />
                         <div>
-                            <h3 className="text-lg font-bold ">
+                            <h3 className="md:text-lg text-center text-sm font-bold ">
                                 Cantik Tiap Hari
                             </h3>
-                            <p>
+                            <p className="hidden md:block">
                                 Temukan ribuan produk kecantikan favorit kamu
                                 dengan promo spesial setiap hari.
                             </p>
@@ -63,8 +63,8 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                     </ScrollRevealComponent>
                     {/* Trusted Review */}
                     <ScrollRevealComponent
-                        className="flex gap-x-2"
-                        animations="slide-left"
+                        className="flex flex-col md:flex-row justify-center items-center gap-x-2"
+                        animations="slide-right"
                     >
                         <img
                             src="/images/reading.svg"
@@ -72,10 +72,10 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                             className="w-20"
                         />
                         <div>
-                            <h3 className="text-lg font-bold ">
+                            <h3 className="md:text-lg text-center text-sm font-bold ">
                                 Review Terpercaya
                             </h3>
-                            <p>
+                            <p className="hidden md:block">
                                 Baca ulasan terpercaya sebelum kamu berbelanja,
                                 jangan ragu.
                             </p>

@@ -89,7 +89,7 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
         ]
     );
     return (
-        <section>
+        <section className="slider-container">
             <div ref={sliderRef} className="h-fit flex overflow-hidden mx-5">
                 {newProduct.map((product) => {
                     const { product_nm, price, sub_category, product_image } =

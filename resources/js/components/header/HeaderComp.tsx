@@ -8,7 +8,7 @@ type Props = {};
 
 const HeaderComp = (props: Props) => {
     return (
-        <main className="flex flex-col mb-20">
+        <main className="flex flex-col md:mb-20">
             <section className="h-24 flex justify-between items-center">
                 {/* brand */}
                 <div className="flex items-center gap-x-24 w-full grow">
@@ -18,7 +18,7 @@ const HeaderComp = (props: Props) => {
                         </span>
                     </div>
                     {/* search */}
-                    <div className="flex items-center border rounded-full px-3 w-96">
+                    <div className="md:flex items-center border rounded-full px-3 w-96 hidden">
                         <input
                             className="border-none focus-visible:ring-0 outline-none w-full"
                             placeholder="Cari"
@@ -34,7 +34,7 @@ const HeaderComp = (props: Props) => {
                 </div>
             </section>
             {/* navbar */}
-            <section className="bg-primary absolute left-0 right-0 top-24 h-14 flex justify-between items-center">
+            <section className="bg-primary absolute left-0 right-0 top-24 h-14 hidden md:flex justify-between items-center">
                 <NavbarComp />
             </section>
         </main>

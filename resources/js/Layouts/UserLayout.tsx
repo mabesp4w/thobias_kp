@@ -13,7 +13,9 @@ const UserLayout: FC<Props> = ({ children }) => {
                 <HeaderComp />
             </header>
 
-            <main className="flex grow mb-10">{children}</main>
+            <main className="flex grow mb-10 -mt-6 overflow-auto">
+                {children}
+            </main>
             <footer>User Footer</footer>
         </LuxyWrapper>
     );
