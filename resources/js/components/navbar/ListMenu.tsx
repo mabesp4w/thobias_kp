@@ -13,9 +13,6 @@ const setUsersMenus = async () => {
     // fetch categories from api axios
     const res = await axios.get(`${BASE_URL}/api/categories/all`);
     const categories = await res.data.data;
-
-    console.log({ categories });
-
     const ListMenu: MenuTypes[] = [
         {
             name: "Home",

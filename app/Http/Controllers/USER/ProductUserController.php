@@ -29,4 +29,12 @@ class ProductUserController
             'subCategory' => $subCategory
         ]);
     }
+
+    function detail($id)
+    {
+        $product = Product::with(['subCategory.category', 'productImage'])->find($id);
+        return Inertia::render('User/products/Detail', [
+            'product' => $product
+        ]);
+    }
 }

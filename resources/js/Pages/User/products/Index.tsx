@@ -23,7 +23,7 @@ const Index: FC<Props> = ({ products, subCategory }) => {
     return (
         <>
             <Head
-                title={`${subCategory.sub_category_nm} | ${subCategory.category.category_nm}`}
+                title={`${subCategory?.sub_category_nm} | ${subCategory?.category?.category_nm}`}
             />
             <div className="container mt-10">
                 <ScrollRevealComponent
