@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { setUsersMenus } from "./ListMenu";
 import MenuTypes from "@/types/MenuTypes";
 import MenuItem from "./MenuItems";
 import { BsTelephoneInbound } from "react-icons/bs";
+import Akun from "../shop/Akun";
+import Wishlist from "../shop/Wishlist";
+import Cart from "../shop/Cart";
 
-type Props = {};
+type Props = {
+    isVisible?: boolean;
+};
 
-const NavbarComp = (props: Props) => {
+const NavbarComp: FC<Props> = ({ isVisible }) => {
     const [menus, setMenus] = useState<MenuTypes[]>([]);
     const [hoverIndex, setHoverIndex] = useState<null | number>(null);
     const pathname = window.location.pathname;
@@ -40,10 +45,19 @@ const NavbarComp = (props: Props) => {
                     />
                 ))}
             </ul>
-            <div className="flex items-center gap-x-2">
-                <BsTelephoneInbound className="text-2xl text-secondary" />
-                <span>0812-3456-789</span>
-            </div>
+            {!isVisible && (
+                <div className="flex items-center gap-x-2">
+                    <BsTelephoneInbound className="text-2xl text-secondary" />
+                    <span>0812-3456-789</span>
+                </div>
+            )}
+            {isVisible && (
+                <div className="flex items-center gap-6">
+                    <Akun />
+                    <Wishlist />
+                    <Cart />
+                </div>
+            )}
         </div>
     );
 };

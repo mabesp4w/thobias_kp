@@ -17,7 +17,7 @@ const Cart = (props: Props) => {
                 className="flex items-center relative cursor-pointer select-none"
                 onClick={() => setOpen(true)}
             >
-                <span className="absolute -top-3 -right-[14px] bg-primary text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-3 -right-[14px] bg-secondary text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                     2
                 </span>
                 <BsHandbag />

@@ -209,3 +209,8 @@
         padding-left: 1.25rem; /* optional, untuk memberi ruang pada nomor */
     }
 }
+
+#navbar {
+    transform: translateZ(0);
+    z-index: 1000; /* Atur z-index jika diperlukan */
+}

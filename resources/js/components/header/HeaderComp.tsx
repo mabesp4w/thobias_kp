@@ -1,8 +1,8 @@
 import { BsSearch } from "react-icons/bs";
-import NavbarComp from "../navbar/NavbarComp";
 import Cart from "../shop/Cart";
 import Wishlist from "../shop/Wishlist";
 import Akun from "../shop/Akun";
+import NavbarComp from "../navbar/NavbarComp";
 
 type Props = {};
 
@@ -33,8 +33,10 @@ const HeaderComp = (props: Props) => {
                     <Cart />
                 </div>
             </section>
-            {/* navbar */}
-            <section className="bg-primary absolute left-0 right-0 top-24 h-14 hidden md:flex justify-between items-center">
+            <section
+                id="navbar"
+                className="bg-primary absolute top-24 left-0 right-0 h-14 hidden md:flex justify-between items-center"
+            >
                 <NavbarComp />
             </section>
         </main>
