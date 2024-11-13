@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', [App\Http\Controllers\USER\HomeController::class, 'index'])->name('user.home');
 Route::group(['prefix' => 'products'], function () {

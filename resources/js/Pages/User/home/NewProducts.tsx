@@ -11,6 +11,7 @@ import { BASE_URL } from "@/services/baseURL";
 import showRupiah from "@/lib/rupiah";
 import { Button } from "@/components/ui/button";
 import { router } from "@inertiajs/react";
+import addToCart from "@/lib/addToCart";
 
 interface Props {
     newProduct: ProductsTypes[];
@@ -88,6 +89,7 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
             },
         ]
     );
+
     return (
         <section className="slider-container">
             <div ref={sliderRef} className="h-fit flex overflow-hidden mx-5">
@@ -123,7 +125,7 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        console.log({ product });
+                                        addToCart(product.id, 1);
                                     }}
                                     type="button"
                                     className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"

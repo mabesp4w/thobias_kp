@@ -12,7 +12,7 @@ import { Link } from "@inertiajs/react";
 export default function BreadcrumbCustom({ items }: any) {
     return (
         <Breadcrumb>
-            <BreadcrumbList className="px-0 mx-0">
+            <BreadcrumbList className="px-0 mx-0 list-none">
                 {items.map((item: any, index: number) => (
                     <Fragment key={index}>
                         <BreadcrumbItem>

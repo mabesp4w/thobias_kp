@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Heart } from "lucide-react";
 import { BsHandbag } from "react-icons/bs";
 import DOMPurify from "dompurify";
+import addToWishlist from "@/lib/addToWishlits";
+import addToCart from "@/lib/addToCart";
 
 type Props = {
     product: ProductsTypes;
@@ -150,14 +152,20 @@ const CardDetail: FC<Props> = ({ product }) => {
                             +
                         </Button>
                     </div>
+                    {/* button */}
                     <div className="flex gap-x-4 items-center">
                         {/* whislist */}
-                        <Heart onClick={() => {}} className="text-primary">
-                            Tambah ke wishlist
-                        </Heart>
+                        <Heart
+                            onClick={() => {
+                                addToWishlist(product.id);
+                            }}
+                            className="text-primary cursor-pointer"
+                        />
                         {/* add to cart */}
                         <Button
-                            onClick={() => {}}
+                            onClick={() => {
+                                addToCart(product.id, value);
+                            }}
                             className="text-primary bg-transparent"
                             type="button"
                         >
