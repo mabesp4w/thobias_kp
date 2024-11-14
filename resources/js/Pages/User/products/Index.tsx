@@ -1,6 +1,7 @@
 import ScrollRevealComponent from "@/components/effects/ScrollRevealComponent";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import addToCart from "@/lib/addToCart";
 import showRupiah from "@/lib/rupiah";
 import { BASE_URL } from "@/services/baseURL";
 import ProductsTypes from "@/types/Products";
@@ -78,7 +79,7 @@ const Index: FC<Props> = ({ products, subCategory }) => {
                                             <Button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    console.log({ product });
+                                                    addToCart(product.id, 1);
                                                 }}
                                                 type="button"
                                                 className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"

@@ -64,7 +64,11 @@ const Wishlist = (props: Props) => {
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetContent>
                     <SheetHeader>
-                        <SheetTitle>Are you absolutely sure?</SheetTitle>
+                        <SheetTitle className="mt-4">
+                            {wish.length > 0
+                                ? "Daftar Wishlist"
+                                : "Wishlist Kosong"}
+                        </SheetTitle>
                         <SheetDescription>
                             This action cannot be undone. This will permanently
                             delete your account and remove your data from our

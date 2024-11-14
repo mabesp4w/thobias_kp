@@ -18,12 +18,10 @@ interface Props {
 }
 
 const NewProducts: FC<Props> = ({ newProduct }) => {
-    if (!newProduct.length) return null;
     const [currentSlide, setCurrentSlide] = useState(0);
     const [loaded, setLoaded] = useState(false);
     const [perView, setPerView] = useState(4);
     const windowWidth = useWindowWidth();
-    console.log({ windowWidth });
 
     useEffect(() => {
         if (windowWidth > 1100) {

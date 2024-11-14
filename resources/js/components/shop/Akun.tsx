@@ -6,11 +6,21 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 import { PersonIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 type Props = {};
 
 const Akun = (props: Props) => {
     const [open, setOpen] = useState(false);
+    useEffect(() => {
+        const handleCartChange = () => setOpen(true);
+
+        window.addEventListener("checkoutUpdated", handleCartChange);
+
+        // Cleanup saat komponen dibongkar
+        return () => {
+            window.removeEventListener("checkoutUpdated", handleCartChange);
+        };
+    }, []);
     return (
         <>
             <div
@@ -23,9 +33,7 @@ const Akun = (props: Props) => {
                 <SheetContent>
                     <SheetHeader>
                         <SheetTitle>Are you absolutely sure?</SheetTitle>
-                        <SheetDescription>
-                            test
-                        </SheetDescription>
+                        <SheetDescription>test</SheetDescription>
                     </SheetHeader>
                 </SheetContent>
             </Sheet>

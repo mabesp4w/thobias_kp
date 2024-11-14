@@ -56,10 +56,10 @@ function ThumbnailPlugin(
 }
 
 const CardDetail: FC<Props> = ({ product }) => {
-    const [value, setValue] = useState(0);
+    const [value, setValue] = useState(1);
 
     const increment = () => setValue((prevValue) => prevValue + 1);
-    const decrement = () => setValue((prevValue) => Math.max(prevValue - 1, 0)); // Nilai tidak bisa kurang dari 0
+    const decrement = () => setValue((prevValue) => Math.max(prevValue - 1, 1)); // Nilai tidak bisa kurang dari 1
 
     const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
         initial: 0,
@@ -85,25 +85,51 @@ const CardDetail: FC<Props> = ({ product }) => {
                 <div className="lg:min-w-[28rem] lg:max-w-[28rem] min-w-[100%]">
                     {/* show */}
                     <div ref={sliderRef} className="keen-slider w-[30rem]">
-                        {product.product_image.map((image) => (
+                        {product.product_image.length > 0 ? (
+                            product.product_image.map((image) => {
+                                const imgSrc = image?.product_img;
+                                return (
+                                    <img
+                                        key={image.id}
+                                        src={`${BASE_URL}/${imgSrc}`}
+                                        alt=""
+                                        className="keen-slider__slide"
+                                    />
+                                );
+                            })
+                        ) : (
                             <img
-                                key={image.id}
-                                src={`${BASE_URL}/${image.product_img}`}
+                                src="/images/no_image.png"
                                 alt=""
                                 className="keen-slider__slide"
                             />
-                        ))}
+                        )}
                     </div>
                     {/* thumbnail */}
                     <div ref={thumbnailRef} className="keen-slider thumbnail">
-                        {product?.product_image?.map((image) => (
+                        {product.product_image.length > 0 ? (
+                            product.product_image.map((image) => {
+                                const imgSrc = image?.product_img;
+                                return (
+                                    <img
+                                        key={image.id}
+                                        src={
+                                            imgSrc
+                                                ? `${BASE_URL}/${imgSrc}`
+                                                : "/images/no_image.png"
+                                        }
+                                        alt=""
+                                        className="keen-slider__slide"
+                                    />
+                                );
+                            })
+                        ) : (
                             <img
-                                key={image.id}
-                                src={`${BASE_URL}/${image.product_img}`}
+                                src="/images/no_image.png"
                                 alt=""
                                 className="keen-slider__slide"
                             />
-                        ))}
+                        )}
                     </div>
                 </div>
                 {/* product detail */}
