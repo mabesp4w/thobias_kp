@@ -21,10 +21,15 @@ Route::group(['prefix' => 'carts'], function () {
     Route::get('copySessionCartToDatabase', [App\Http\Controllers\API\CartAPI::class, 'copySessionCartToDatabase']);
 });
 
+
+
 Route::middleware('guest')->group(function () {
     Route::post('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/status', function () {
+        return response()->json(['user' => Auth::user()]);
+    });
     Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

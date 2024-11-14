@@ -25,7 +25,7 @@ class AuthenticatedSessionController
 
         $request->session()->regenerate();
 
-        return redirect()->intended('/dashboard'); // Redirect ke halaman dashboard setelah login
+        return redirect('/'); // Redirect ke halaman login setelah logout
     }
 
     /**

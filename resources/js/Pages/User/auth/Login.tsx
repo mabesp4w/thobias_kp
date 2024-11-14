@@ -1,16 +1,31 @@
+import LoadingSpiner from "@/components/loading/LoadingSpiner";
+import { Button } from "@/components/ui/button";
 import { Head, useForm } from "@inertiajs/react";
+import axios from "axios";
+import { useState } from "react";
 
 type Props = {};
 
 const Login = (props: Props) => {
+    const [isLoading, setIsLoading] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         email: "",
         password: "",
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        setIsLoading(true);
         e.preventDefault();
-        post("/login");
+        await axios
+            .post("/login", data)
+            .then((res) => {
+                window.dispatchEvent(new Event("cartUpdated"));
+                window.dispatchEvent(new Event("akunUpdated"));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        setIsLoading(false);
     };
 
     return (
@@ -63,13 +78,18 @@ const Login = (props: Props) => {
                             </div>
                         )}
                     </div>
-                    <button
-                        type="submit"
-                        disabled={processing}
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                    >
-                        Login
-                    </button>
+                    <div className="flex justify-center">
+                        {isLoading && <LoadingSpiner />}
+                        {!isLoading && (
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                                className="w-full"
+                            >
+                                Login
+                            </Button>
+                        )}
+                    </div>
                 </form>
             </div>
         </>

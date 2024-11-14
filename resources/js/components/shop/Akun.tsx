@@ -16,24 +16,35 @@ const Akun = (props: Props) => {
     const { auth } = usePage().props;
     const [open, setOpen] = useState(false);
     const [user, setUser] = useState<any>(auth?.user);
+
+    // cek statue
+    const cek = async () => {
+        await axios.get("/status").then((res) => {
+            setUser(res.data.user);
+        });
+    };
+
     useEffect(() => {
         const handleCartChange = () => setOpen(true);
+        const akunUpdated = () => cek();
 
         window.addEventListener("checkoutUpdated", handleCartChange);
+        window.addEventListener("akunUpdated", akunUpdated);
 
         // Cleanup saat komponen dibongkar
         return () => {
             window.removeEventListener("checkoutUpdated", handleCartChange);
+            window.removeEventListener("akunUpdated", akunUpdated);
         };
     }, []);
 
-    console.log({ auth });
     const logout = () => {
         // method post
         axios
             .post("/logout")
             .then((res) => {
                 setUser(null);
+                window.dispatchEvent(new Event("cartUpdated"));
             })
             .catch((err) => {
                 console.log(err);
