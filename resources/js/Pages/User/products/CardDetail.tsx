@@ -16,6 +16,7 @@ import { BsHandbag } from "react-icons/bs";
 import DOMPurify from "dompurify";
 import addToWishlist from "@/lib/addToWishlits";
 import addToCart from "@/lib/addToCart";
+import { router } from "@inertiajs/react";
 
 type Props = {
     product: ProductsTypes;
@@ -78,6 +79,18 @@ const CardDetail: FC<Props> = ({ product }) => {
     );
 
     const cleanContent = DOMPurify.sanitize(product.description);
+
+    const gotoCheckout = () => {
+        const isLoggedIn = false;
+        // Memicu event custom untuk memperbarui komponen cart
+        if (!isLoggedIn) {
+            window.dispatchEvent(new Event("checkoutUpdated"));
+        }
+        if (isLoggedIn) {
+            addToCart(product.id, value);
+            router.visit("/checkout");
+        }
+    };
     return (
         <section className="">
             <div className="flex flex-col lg:flex-row gap-x-12">
@@ -198,7 +211,7 @@ const CardDetail: FC<Props> = ({ product }) => {
                             <BsHandbag /> Tambah ke keranjang
                         </Button>
                         {/* buy now */}
-                        <Button onClick={() => {}} type="button">
+                        <Button onClick={gotoCheckout} type="button">
                             Beli sekarang
                         </Button>
                     </div>

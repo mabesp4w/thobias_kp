@@ -28,7 +28,8 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Event::listen(Login::class, function () {
-            app()->call([CartAPI::class, 'copySessionCartToDatabase']);
+            $cartAPI = app(CartAPI::class);
+            $cartAPI->copySessionCartToDatabase();
         });
     }
 }

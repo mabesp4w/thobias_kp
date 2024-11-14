@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import useProductsApi from "@/store/api/Products";
 import { BASE_URL } from "@/services/baseURL";
 import showRupiah from "@/lib/rupiah";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { Button } from "../ui/button";
 import axios from "axios";
 
@@ -22,9 +22,13 @@ interface CartItem {
 }
 
 const Cart = (props: Props) => {
+    // state
     const [open, setOpen] = useState(false);
     const [cart, setCart] = useState<any[]>([]);
     const [isShaking, setIsShaking] = useState(false);
+    // props
+    const { auth } = usePage().props;
+    const isLoggedIn = auth?.user?.id ? true : false;
     // store
     const { getProductIds, dtProducts } = useProductsApi();
 
@@ -60,7 +64,6 @@ const Cart = (props: Props) => {
     }, [open, cart]);
 
     const removeItem = async (id: string) => {
-        const isLoggedIn = false;
         const endpoint = isLoggedIn
             ? "/carts/removeFromCartDatabase"
             : "/carts/removeFromCartSession";
@@ -77,15 +80,21 @@ const Cart = (props: Props) => {
     };
 
     const gotoCheckout = () => {
-        const isLoggedIn = true;
         // Memicu event custom untuk memperbarui komponen cart
         if (!isLoggedIn) {
-            window.dispatchEvent(new Event("checkoutUpdated"));
+            return window.dispatchEvent(new Event("checkoutUpdated"));
         }
         if (isLoggedIn) {
-            router.visit("/checkout");
+            return router.visit("/checkout");
         }
     };
+
+    useEffect(() => {
+        if (cart.length > 0) {
+            setIsShaking(true);
+            setTimeout(() => setIsShaking(false), 500);
+        }
+    }, [cart]);
 
     return (
         <>

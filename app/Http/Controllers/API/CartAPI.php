@@ -76,7 +76,7 @@ class CartAPI
                     'product_id' => $productId
                 ],
                 [
-                    'quantity' => $item['quantity']
+                    'qty' => $item['quantity']
                 ]
             );
         }
@@ -95,7 +95,7 @@ class CartAPI
                 'product_id' => $productId
             ],
             [
-                'quantity' => DB::raw("quantity + $quantity")
+                'qty' => DB::raw("quantity + $quantity")
             ]
         );
 

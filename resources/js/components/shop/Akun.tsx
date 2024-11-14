@@ -1,16 +1,21 @@
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
+import Login from "@/Pages/User/auth/Login";
+import { usePage } from "@inertiajs/react";
 import { PersonIcon } from "@radix-ui/react-icons";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 type Props = {};
 
 const Akun = (props: Props) => {
+    const { auth } = usePage().props;
     const [open, setOpen] = useState(false);
+    const [user, setUser] = useState<any>(auth?.user);
     useEffect(() => {
         const handleCartChange = () => setOpen(true);
 
@@ -21,6 +26,19 @@ const Akun = (props: Props) => {
             window.removeEventListener("checkoutUpdated", handleCartChange);
         };
     }, []);
+
+    console.log({ auth });
+    const logout = () => {
+        // method post
+        axios
+            .post("/logout")
+            .then((res) => {
+                setUser(null);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     return (
         <>
             <div
@@ -33,7 +51,15 @@ const Akun = (props: Props) => {
                 <SheetContent>
                     <SheetHeader>
                         <SheetTitle>Are you absolutely sure?</SheetTitle>
-                        <SheetDescription>test</SheetDescription>
+                        <div>
+                            {!user && <Login />}
+                            {user && (
+                                <div>
+                                    <p>{user.name}</p>
+                                    <Button onClick={logout}>Logout</Button>
+                                </div>
+                            )}
+                        </div>
                     </SheetHeader>
                 </SheetContent>
             </Sheet>
