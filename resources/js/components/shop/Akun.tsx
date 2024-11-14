@@ -24,6 +24,8 @@ const Akun = (props: Props) => {
         });
     };
 
+    console.log({ user });
+
     useEffect(() => {
         const handleCartChange = () => setOpen(true);
         const akunUpdated = () => cek();

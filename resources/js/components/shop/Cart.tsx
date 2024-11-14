@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import useProductsApi from "@/store/api/Products";
 import { BASE_URL } from "@/services/baseURL";
 import showRupiah from "@/lib/rupiah";
-import { router, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { Button } from "../ui/button";
 import axios from "axios";
 
@@ -26,11 +26,17 @@ const Cart = (props: Props) => {
     const [open, setOpen] = useState(false);
     const [cart, setCart] = useState<any[]>([]);
     const [isShaking, setIsShaking] = useState(false);
-    // props
-    const { auth } = usePage().props;
-    const isLoggedIn = auth?.user?.id ? true : false;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     // store
     const { getProductIds, dtProducts } = useProductsApi();
+
+    // cek statue
+    const cek = async () => {
+        await axios.get("/status").then((res) => {
+            setIsLoggedIn(res.data.user);
+        });
+    };
 
     // getCart
     const fetchCartData = async () => {
@@ -85,6 +91,7 @@ const Cart = (props: Props) => {
             return window.dispatchEvent(new Event("checkoutUpdated"));
         }
         if (isLoggedIn) {
+            setOpen(false);
             return router.visit("/checkout");
         }
     };
@@ -94,6 +101,7 @@ const Cart = (props: Props) => {
             setIsShaking(true);
             setTimeout(() => setIsShaking(false), 500);
         }
+        cek();
     }, [cart]);
 
     return (

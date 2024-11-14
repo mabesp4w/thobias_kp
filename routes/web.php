@@ -21,9 +21,11 @@ Route::group(['prefix' => 'carts'], function () {
     Route::get('copySessionCartToDatabase', [App\Http\Controllers\API\CartAPI::class, 'copySessionCartToDatabase']);
 });
 
-
-
 Route::middleware('guest')->group(function () {
+    Route::get('/login', function () {
+        // redirect ke halaman login inertia route name
+        return Inertia::location(route('user.home'));
+    })->name('login');
     Route::post('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
 });
 
@@ -32,4 +34,8 @@ Route::middleware('auth')->group(function () {
         return response()->json(['user' => Auth::user()]);
     });
     Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    // checkout
+    Route::group(['prefix' => 'checkout'], function () {
+        Route::get('/', [App\Http\Controllers\USER\CheckoutUserController::class, 'index'])->name('user.checkout.index');
+    });
 });
