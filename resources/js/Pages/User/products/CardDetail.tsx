@@ -1,6 +1,6 @@
 import { BASE_URL } from "@/services/baseURL";
 import ProductsTypes from "@/types/Products";
-import { FC, MutableRefObject, useState } from "react";
+import { FC, MutableRefObject, useEffect, useState } from "react";
 import {
     useKeenSlider,
     KeenSliderPlugin,
@@ -17,6 +17,7 @@ import DOMPurify from "dompurify";
 import addToWishlist from "@/lib/addToWishlits";
 import addToCart from "@/lib/addToCart";
 import { router } from "@inertiajs/react";
+import axios from "axios";
 
 type Props = {
     product: ProductsTypes;
@@ -80,14 +81,26 @@ const CardDetail: FC<Props> = ({ product }) => {
 
     const cleanContent = DOMPurify.sanitize(product.description);
 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // cek statue
+    const cek = async () => {
+        await axios.get("/status").then((res) => {
+            setIsLoggedIn(res.data.user);
+        });
+    };
+
+    useEffect(() => {
+        cek();
+    }, []);
+
     const gotoCheckout = () => {
-        const isLoggedIn = false;
         // Memicu event custom untuk memperbarui komponen cart
         if (!isLoggedIn) {
             window.dispatchEvent(new Event("checkoutUpdated"));
         }
         if (isLoggedIn) {
-            addToCart(product.id, value);
+            addToCart(product.id, value, isLoggedIn);
             router.visit("/checkout");
         }
     };
@@ -203,7 +216,7 @@ const CardDetail: FC<Props> = ({ product }) => {
                         {/* add to cart */}
                         <Button
                             onClick={() => {
-                                addToCart(product.id, value);
+                                addToCart(product.id, value, isLoggedIn);
                             }}
                             className="text-primary bg-transparent"
                             type="button"

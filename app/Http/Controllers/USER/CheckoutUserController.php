@@ -10,7 +10,8 @@ class CheckoutUserController
 {
     public function index()
     {
-        $carts = Cart::where('user_id', Auth::id())->get();
+        $carts = Cart::with(['product.productImage'])
+            ->where('user_id', Auth::id())->get();
 
         // inertia
         return inertia('User/checkout/Index', [

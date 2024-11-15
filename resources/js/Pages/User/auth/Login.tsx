@@ -21,6 +21,7 @@ const Login = (props: Props) => {
             .then((res) => {
                 window.dispatchEvent(new Event("cartUpdated"));
                 window.dispatchEvent(new Event("akunUpdated"));
+                window.dispatchEvent(new Event("productUpdated"));
             })
             .catch((err) => {
                 console.log(err);

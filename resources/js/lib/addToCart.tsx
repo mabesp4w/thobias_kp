@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const addToCart = async (productId: string, quantity: number) => {
+const addToCart = async (
+    productId: string,
+    quantity: number,
+    isLoggedIn: boolean
+) => {
     // const isLoggedIn = checkLoginStatus(); // Fungsi untuk mengecek status login
-    const isLoggedIn = false;
     const endpoint = isLoggedIn
         ? "/carts/addToCartDatabase"
         : "/carts/addToCartSession";

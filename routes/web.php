@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\USER\UserInfoController;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
+
 
 Route::get('/', [App\Http\Controllers\USER\HomeController::class, 'index'])->name('user.home');
 Route::group(['prefix' => 'products'], function () {
@@ -30,9 +30,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/status', function () {
-        return response()->json(['user' => Auth::user()]);
-    });
+    Route::get('/status', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'status'])->name('status');
     Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
     // checkout
     Route::group(['prefix' => 'checkout'], function () {

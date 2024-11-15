@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Cart extends Model
+class UserInfo extends Model
 {
     use HasFactory, HasUuids;
 
-    // belongsTo product
-    public function product()
+    // belongsTo village
+    public function village()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Village::class);
     }
 }

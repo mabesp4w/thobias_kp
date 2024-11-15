@@ -12,6 +12,7 @@ import showRupiah from "@/lib/rupiah";
 import { Button } from "@/components/ui/button";
 import { router } from "@inertiajs/react";
 import addToCart from "@/lib/addToCart";
+import axios from "axios";
 
 interface Props {
     newProduct: ProductsTypes[];
@@ -21,6 +22,32 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [loaded, setLoaded] = useState(false);
     const [perView, setPerView] = useState(4);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isChanged, setIsChanged] = useState(false);
+
+    // cek statue
+    const cek = async () => {
+        const res = await axios.get("/status");
+        setIsLoggedIn(res?.data?.user || false);
+        console.log("cek");
+    };
+
+    useEffect(() => {
+        cek();
+    }, [isChanged]);
+
+    useEffect(() => {
+        // Event listener untuk perubahan session
+        const handleProdukChange = () => setIsChanged(!isChanged);
+        // Event listener custom untuk memantau perubahan pada wish
+        window.addEventListener("productUpdated", handleProdukChange);
+
+        // Cleanup saat komponen dibongkar
+        return () => {
+            window.removeEventListener("productUpdated", handleProdukChange);
+        };
+    }, []);
+
     const windowWidth = useWindowWidth();
 
     useEffect(() => {
@@ -123,7 +150,7 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        addToCart(product.id, 1);
+                                        addToCart(product.id, 1, isLoggedIn);
                                     }}
                                     type="button"
                                     className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"

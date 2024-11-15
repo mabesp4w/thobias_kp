@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,5 +40,12 @@ class AuthenticatedSessionController
         $request->session()->regenerateToken();
 
         return redirect('/'); // Redirect ke halaman login setelah logout
+    }
+
+    // status
+    public function status()
+    {
+        $user = User::with('userInfo.village.subDistrict')->where('id', Auth::id())->first();
+        return response()->json(['user' => $user]);
     }
 }

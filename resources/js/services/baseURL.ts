@@ -23,6 +23,10 @@ const storage = axios.create({
     baseURL: url_storage,
 });
 
+const def = axios.create({
+    baseURL: BASE_URL,
+});
+
 export {
     auth,
     crud,
@@ -33,4 +37,5 @@ export {
     url_api,
     url_crud,
     url_storage,
+    def,
 };

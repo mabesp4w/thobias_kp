@@ -89,15 +89,22 @@ class CartAPI
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity', 1);
 
-        Cart::updateOrCreate(
-            [
+        // Cek apakah item sudah ada di cart
+        $cartItem = Cart::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->first();
+
+        if ($cartItem) {
+            // Jika sudah ada, tambahkan quantity
+            $cartItem->increment('quantity', $quantity);
+        } else {
+            // Jika belum ada, buat baru dengan quantity
+            Cart::create([
                 'user_id' => Auth::id(),
-                'product_id' => $productId
-            ],
-            [
-                'quantity' => DB::raw("quantity + $quantity")
-            ]
-        );
+                'product_id' => $productId,
+                'quantity' => $quantity
+            ]);
+        }
 
         return response()->json(['message' => 'Added to database cart']);
     }

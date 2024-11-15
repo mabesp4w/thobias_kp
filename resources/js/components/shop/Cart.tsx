@@ -33,10 +33,12 @@ const Cart = (props: Props) => {
 
     // cek statue
     const cek = async () => {
-        await axios.get("/status").then((res) => {
-            setIsLoggedIn(res.data.user);
-        });
+        const res = await axios.get("/status");
+        console.log({ res });
+        setIsLoggedIn(res?.data?.user);
     };
+
+    console.log({ isLoggedIn });
 
     // getCart
     const fetchCartData = async () => {
@@ -114,7 +116,7 @@ const Cart = (props: Props) => {
             >
                 {cart.length > 0 && (
                     <span className="absolute -top-3 -right-4 bg-secondary text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-                        {cart.length}
+                        {cart.reduce((total, item) => total + item.quantity, 0)}
                     </span>
                 )}
                 <BsHandbag />
