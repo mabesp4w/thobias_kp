@@ -9,4 +9,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory, HasUuids;
+
+    // has many order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

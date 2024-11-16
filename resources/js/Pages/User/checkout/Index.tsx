@@ -9,6 +9,7 @@ import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Question from "./Question";
+import ShippingCostsTypes from "@/types/ShippingCosts";
 
 type Props = {
     carts: CartsTypes[];
@@ -32,7 +33,6 @@ const Index = ({ carts }: Props) => {
     }, []);
 
     useEffect(() => {
-        console.log({ user });
         if (user?.user_info && user?.user_info?.length > 0) {
             setShowShippingCosts(user?.user_info[0]?.village_id);
         }
@@ -57,7 +57,7 @@ const Index = ({ carts }: Props) => {
             <Question
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
-                shipping={showSippingCost}
+                shipping={showSippingCost as ShippingCostsTypes}
                 carts={carts}
                 user={user}
             />

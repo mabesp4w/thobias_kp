@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_infos', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('village_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('village_id')->constrained()->cascadeOnDelete();
             $table->string('nm_user', 100);
             $table->string('phone_number', 15);
             $table->string('address', 100);
