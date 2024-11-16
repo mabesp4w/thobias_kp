@@ -7,7 +7,8 @@ import { BASE_URL } from "@/services/baseURL";
 import ProductsTypes from "@/types/Products";
 import SubCategoriesTypes from "@/types/SubCategories";
 import { Head, router } from "@inertiajs/react";
-import { FC } from "react";
+import axios from "axios";
+import { FC, useEffect, useState } from "react";
 
 type Props = {
     products: {
@@ -19,8 +20,18 @@ type Props = {
 };
 
 const Index: FC<Props> = ({ products, subCategory }) => {
-    console.log({ subCategory });
-    console.log({ products });
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // cek statue
+    const cek = async () => {
+        await axios.get("/status").then((res) => {
+            setIsLoggedIn(res.data.user);
+        });
+    };
+
+    useEffect(() => {
+        cek();
+    }, []);
     return (
         <>
             <Head
@@ -79,7 +90,11 @@ const Index: FC<Props> = ({ products, subCategory }) => {
                                             <Button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    addToCart(product.id, 1);
+                                                    addToCart({
+                                                        productId: product.id,
+                                                        quantity: 1,
+                                                        isLoggedIn,
+                                                    });
                                                 }}
                                                 type="button"
                                                 className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"

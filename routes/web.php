@@ -17,6 +17,7 @@ Route::group(['prefix' => 'carts'], function () {
     Route::post('addToCartSession', [App\Http\Controllers\API\CartAPI::class, 'addToCartSession']);
     Route::post('removeFromCartSession', [App\Http\Controllers\API\CartAPI::class, 'removeFromCartSession']);
     Route::post('addToCartDatabase', [App\Http\Controllers\API\CartAPI::class, 'addToCartDatabase']);
+    Route::post('setCartQuantity', [App\Http\Controllers\API\CartAPI::class, 'setCartQuantity']);
     Route::post('removeFromCartDatabase', [App\Http\Controllers\API\CartAPI::class, 'removeFromCartDatabase']);
     Route::get('copySessionCartToDatabase', [App\Http\Controllers\API\CartAPI::class, 'copySessionCartToDatabase']);
 });

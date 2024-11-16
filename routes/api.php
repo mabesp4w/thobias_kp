@@ -14,3 +14,9 @@ Route::group(['prefix' => 'products'], function () {
 Route::group(['prefix' => 'villages'], function () {
     Route::get('/', [App\Http\Controllers\API\VillageController::class, 'index'])->name('villages');
 });
+
+// shippingCosts
+Route::group(['prefix' => 'shippingCosts'], function () {
+    Route::get('/', [App\Http\Controllers\API\ShippingCostAPI::class, 'index'])->name('shippingCosts');
+    Route::get('{id}', [App\Http\Controllers\API\ShippingCostAPI::class, 'show'])->name('shippingCosts.show');
+});

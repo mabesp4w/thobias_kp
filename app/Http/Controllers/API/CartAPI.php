@@ -109,6 +109,42 @@ class CartAPI
         return response()->json(['message' => 'Added to database cart']);
     }
 
+    public function setCartQuantity(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $newQuantity = $request->input('quantity');
+
+        // Cek apakah item ada di cart
+        $cartItem = Cart::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->first();
+
+        if ($cartItem) {
+            // Jika item ditemukan, update quantity
+            if ($newQuantity > 0) {
+                $cartItem->update(['quantity' => $newQuantity]);
+                return response()->json(['message' => 'Product quantity updated in database cart']);
+            } else {
+                // Jika quantity baru kurang dari atau sama dengan 0, hapus item dari cart
+                $cartItem->delete();
+                return response()->json(['message' => 'Product removed from cart due to zero quantity']);
+            }
+        } else {
+            // Jika item tidak ditemukan di cart, dan newQuantity lebih dari 0, tambahkan ke cart
+            if ($newQuantity > 0) {
+                Cart::create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $productId,
+                    'quantity' => $newQuantity
+                ]);
+                return response()->json(['message' => 'Product added to cart with specified quantity']);
+            } else {
+                // Jika newQuantity tidak lebih dari 0, tidak perlu menambahkan apa-apa
+                return response()->json(['message' => 'No action taken, quantity specified is zero or less']);
+            }
+        }
+    }
+
     public function removeFromCartDatabase(Request $request)
     {
         $productId = $request->input('product_id');

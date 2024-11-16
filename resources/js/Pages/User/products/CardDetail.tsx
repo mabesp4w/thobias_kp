@@ -100,7 +100,7 @@ const CardDetail: FC<Props> = ({ product }) => {
             window.dispatchEvent(new Event("checkoutUpdated"));
         }
         if (isLoggedIn) {
-            addToCart(product.id, value, isLoggedIn);
+            addToCart({ productId: product.id, quantity: value, isLoggedIn });
             router.visit("/checkout");
         }
     };
@@ -216,7 +216,11 @@ const CardDetail: FC<Props> = ({ product }) => {
                         {/* add to cart */}
                         <Button
                             onClick={() => {
-                                addToCart(product.id, value, isLoggedIn);
+                                addToCart({
+                                    productId: product.id,
+                                    quantity: value,
+                                    isLoggedIn,
+                                });
                             }}
                             className="text-primary bg-transparent"
                             type="button"

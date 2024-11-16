@@ -150,7 +150,11 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        addToCart(product.id, 1, isLoggedIn);
+                                        addToCart({
+                                            productId: product.id,
+                                            quantity: 1,
+                                            isLoggedIn,
+                                        });
                                     }}
                                     type="button"
                                     className="bg-pink-500/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50"

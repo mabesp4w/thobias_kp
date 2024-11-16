@@ -1,14 +1,36 @@
 import axios from "axios";
 
-const addToCart = async (
-    productId: string,
-    quantity: number,
-    isLoggedIn: boolean
-) => {
+interface Props {
+    productId: string;
+    quantity?: number;
+    isLoggedIn: boolean;
+    costumQuantity?: number;
+}
+
+const addToCart = async ({
+    productId,
+    quantity = 1,
+    isLoggedIn,
+    costumQuantity,
+}: Props) => {
     // const isLoggedIn = checkLoginStatus(); // Fungsi untuk mengecek status login
-    const endpoint = isLoggedIn
-        ? "/carts/addToCartDatabase"
-        : "/carts/addToCartSession";
+    // const endpoint = isLoggedIn
+    //     ? "/carts/addToCartDatabase"
+    //     : "/carts/addToCartSession";
+    let endpoint = "";
+    if (isLoggedIn) {
+        if (costumQuantity) {
+            endpoint = "/carts/setCartQuantity";
+        } else {
+            endpoint = "/carts/addToCartDatabase";
+        }
+    } else {
+        endpoint = "/carts/addToCartSession";
+    }
+
+    if (costumQuantity) {
+        quantity = costumQuantity;
+    }
 
     await axios.post(endpoint, { product_id: productId, quantity });
 
