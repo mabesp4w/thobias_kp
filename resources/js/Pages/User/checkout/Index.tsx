@@ -13,9 +13,10 @@ import ShippingCostsTypes from "@/types/ShippingCosts";
 
 type Props = {
     carts: CartsTypes[];
+    MIDTRANS_CLIENT_KEY?: string;
 };
 
-const Index = ({ carts }: Props) => {
+const Index = ({ carts, MIDTRANS_CLIENT_KEY }: Props) => {
     // state
     const [user, setUser] = useState<User>();
     const [openDialog, setOpenDialog] = useState(false);
@@ -60,10 +61,11 @@ const Index = ({ carts }: Props) => {
                 shipping={showSippingCost as ShippingCostsTypes}
                 carts={carts}
                 user={user}
+                MIDTRANS_CLIENT_KEY={MIDTRANS_CLIENT_KEY}
             />
             <section className="container mt-10 flex flex-col gap-y-10">
                 <h1 className="text-center text-2xl font-bold">Checkout</h1>
-                <div className="flex mx-auto w-full justify-center">
+                <div className="flex mx-auto w-full justify-center gap-x-3">
                     <div className="flex flex-col gap-y-6">
                         {carts.map((cart) => (
                             <DetailProdct

@@ -1,5 +1,5 @@
-// orderItems
-export default interface OrderItemsTypes {
+// payments
+export default interface PaymentsTypes {
     id: string;
     product_id: string;
     payment_type: string;

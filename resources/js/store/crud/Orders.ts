@@ -125,7 +125,7 @@ const useOrders = create(
                     },
                 }));
                 return {
-                    status: "berhasil tambah",
+                    status: res.data.type,
                     data: res.data,
                 };
             } catch (error: any) {

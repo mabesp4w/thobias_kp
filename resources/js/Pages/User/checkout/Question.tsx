@@ -5,8 +5,11 @@ import { DialogFooter } from "@/components/ui/dialog";
 import useOrders from "@/store/crud/Orders";
 import { User } from "@/types";
 import CartsTypes from "@/types/Carts";
+import OrdersTypes from "@/types/Orders";
 import ShippingCostsTypes from "@/types/ShippingCosts";
-import { Dispatch, FC, SetStateAction } from "react";
+import { router } from "@inertiajs/react";
+import axios from "axios";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 
 type Props = {
     openDialog: boolean;
@@ -14,6 +17,7 @@ type Props = {
     shipping: ShippingCostsTypes;
     carts: CartsTypes[];
     user?: User;
+    MIDTRANS_CLIENT_KEY?: string;
 };
 
 const Question: FC<Props> = ({
@@ -22,8 +26,26 @@ const Question: FC<Props> = ({
     carts,
     user,
     shipping,
+    MIDTRANS_CLIENT_KEY,
 }) => {
+    // state
+    const [snapLoaded, setSnapLoaded] = useState<boolean>(false);
+    // store
     const { addData } = useOrders();
+    // useEffect
+    useEffect(() => {
+        // Memuat skrip Snap.js
+        const script = document.createElement("script");
+        script.src = "https://app.sandbox.midtrans.com/snap/snap.js"; // URL untuk sandbox atau production
+        //  get MIDTRANS_CLIENT_KEY from .env
+        script.setAttribute("data-client-key", MIDTRANS_CLIENT_KEY || "");
+        script.onload = () => setSnapLoaded(true);
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
     const handleSubmit = async () => {
         const total_price = carts.reduce(
@@ -37,11 +59,49 @@ const Question: FC<Props> = ({
             shipping_cost_id: shipping.id,
             total_price,
             total_payment,
-            status: "tunggu pembayaran",
+            status: "tunggu",
             carts,
         };
 
-        await addData(row);
+        const res = await addData(row);
+        console.log({ res });
+        if (res.status === "success") {
+            setOpenDialog(false);
+            handlePayment(res.data.data);
+            router.visit("/orders");
+        }
+    };
+
+    const handlePayment = async (order: OrdersTypes) => {
+        if (!snapLoaded) {
+            alert("Snap.js is not loaded yet!");
+            return;
+        }
+        const response = await axios.post("/payment", { order_id: order.id });
+        const snapToken = response.data;
+        // Gunakan snapToken untuk membuka Snap popup
+        // @ts-ignore
+        window.snap.pay(snapToken, {
+            onSuccess: function (result: any) {
+                /* Handle success */
+                console.log({ result });
+                router.visit("/orders");
+            },
+            onPending: function (result: any) {
+                /* Handle pending */
+                console.log({ result });
+                router.visit("/orders");
+            },
+            onError: function (result: any) {
+                /* Handle error */
+                console.log({ result });
+                router.visit("/orders");
+            },
+            onClose: function () {
+                /* Handle when user close the popup without finishing payment */
+                console.log("user closed the popup");
+            },
+        });
     };
     return (
         <DefaultDialog

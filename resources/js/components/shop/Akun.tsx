@@ -10,6 +10,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Form from "@/Pages/User/akun/Form";
+import { Link } from "@inertiajs/react";
 type Props = {};
 
 const Akun = (props: Props) => {
@@ -22,7 +23,6 @@ const Akun = (props: Props) => {
     const cek = async () => {
         const res = await axios.get("/status");
         setUser(res.data.user);
-        console.log("cek");
     };
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const Akun = (props: Props) => {
                         {!user && <Login />}
                         {user && (
                             <div className="flex flex-col justify-between h-full pb-2">
-                                <div>
+                                <div className="flex flex-col justify-between h-full">
                                     <div className="flex flex-col gap-y-2">
                                         <div className="border-t border-gray-200">
                                             <dl>
@@ -153,7 +153,8 @@ const Akun = (props: Props) => {
                                                         </Button>
                                                     </div>
                                                 )}
-                                                {!user.user_info && (
+                                                {user.user_info.length ===
+                                                    0 && (
                                                     <div className="text-sm flex flex-col gap-y-2 items-center mt-10">
                                                         <p>
                                                             Anda belum
@@ -182,6 +183,12 @@ const Akun = (props: Props) => {
                                             </dl>
                                         </div>
                                     </div>
+                                    <Link
+                                        href="/orders"
+                                        className="mb-16 underline text-secondary hover:text-secondary-foreground w-fit"
+                                    >
+                                        Riwayat Pesanan
+                                    </Link>
                                 </div>
                                 <Button onClick={logout}>Logout</Button>
                             </div>

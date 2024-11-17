@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('shipping_cost_id')->constrained()->cascadeOnDelete();
             $table->integer('total_price');
             $table->integer('total_payment');
+            $table->text('snap_token');
             $table->string('status');
             $table->timestamps();
         });

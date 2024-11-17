@@ -2,8 +2,8 @@ import BannersTypes from "@/types/Banners";
 import { Head } from "@inertiajs/react";
 import ProductsTypes from "@/types/Products";
 import ScrollRevealComponent from "@/components/effects/ScrollRevealComponent";
-import NewProducts from "./NewProducts";
 import Banners from "./Banners";
+import NewProducts from "./NewProducts";
 
 interface Props {
     banners: BannersTypes[];
@@ -25,7 +25,9 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                     <h3 className="text-center text-2xl font-bold uppercase mb-4">
                         Produk Terlaris
                     </h3>
-                    <NewProducts newProduct={bestSeller} />
+                    {newProduct?.length > 0 && (
+                        <NewProducts newProduct={newProduct} />
+                    )}
                 </ScrollRevealComponent>
                 {/* section */}
                 <section className="grid grid-cols-3 lg:gap-x-28 gap-x-2 container my-10">
@@ -90,7 +92,9 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                     <h3 className="text-center text-2xl font-bold uppercase mb-4">
                         Produk Terbaru
                     </h3>
-                    <NewProducts newProduct={newProduct} />
+                    {newProduct?.length > 0 && (
+                        <NewProducts newProduct={newProduct} />
+                    )}
                 </ScrollRevealComponent>
             </main>
         </>

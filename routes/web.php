@@ -37,4 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'checkout'], function () {
         Route::get('/', [App\Http\Controllers\USER\CheckoutUserController::class, 'index'])->name('user.checkout.index');
     });
+
+    Route::group(['prefix' => '/orders'], function () {
+        Route::get('/', [App\Http\Controllers\USER\OrderUserController::class, 'index'])->name('user.orders.index');
+    });
+
+    Route::group(['prefix' => 'payment'], function () {
+        Route::post('/', [App\Http\Controllers\USER\PaymentController::class, 'submitPayment'])->name('payment.submit');
+        Route::get('/status/{orderId}', [App\Http\Controllers\USER\PaymentController::class, 'getTransactionStatus'])->name('payment.status');
+    });
 });

@@ -34,11 +34,8 @@ const Cart = (props: Props) => {
     // cek statue
     const cek = async () => {
         const res = await axios.get("/status");
-        console.log({ res });
         setIsLoggedIn(res?.data?.user);
     };
-
-    console.log({ isLoggedIn });
 
     // getCart
     const fetchCartData = async () => {

@@ -22,7 +22,7 @@ class HomeController
         $bestSeller =
             Product::leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
             ->with(['subCategory.category', 'productImage'])
-            ->select('products.*', DB::raw('COALESCE(SUM(order_items.qty), 0) as total_ordered'))
+            ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
             ->groupBy('products.id')
             ->orderByDesc('total_ordered')
             ->take(8)

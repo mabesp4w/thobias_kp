@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\CRUD;
 
+use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\CrudResource;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Cart;
 
 class OrderController
 {
@@ -75,15 +76,24 @@ class OrderController
             return $validate;
         }
 
-        $order = Order::create($request->only(['user_id', 'shipping_cost_id', 'total_price', 'total_payment', 'status']));
+        DB::beginTransaction();
+        try {
+            $order = Order::create($request->only(['user_id', 'shipping_cost_id', 'total_price', 'total_payment', 'status']));
 
-        foreach ($request->items as $item) {
-            $order->orderItems()->create($item);
-            // delete cart
-            // Cart::where('user_id', $request->user_id)->delete();
+            foreach ($request->carts as $item) {
+                // escape product
+                unset($item['product']);
+                $order->orderItems()->create($item);
+                // delete cart
+                Cart::where('user_id', $request->user_id)->delete();
+            }
+            DB::commit();
+            return new CrudResource('success', 'Data Berhasil Disimpan', $order->load('orderItems'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // error
+            return response()->json(['message' => $th->getMessage()], 422);
         }
-
-        return new CrudResource('success', 'Data Berhasil Disimpan', $order->load('orderItems'));
     }
 
     /**

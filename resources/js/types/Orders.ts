@@ -1,3 +1,5 @@
+import OrderItemsTypes from "./OrderItems";
+
 // orders
 export default interface OrdersTypes {
     id: string;
@@ -6,4 +8,6 @@ export default interface OrdersTypes {
     total_price: number;
     total_payment: number;
     status: string;
+    order_items: OrderItemsTypes[];
+    snap_token: string;
 }
