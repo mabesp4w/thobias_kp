@@ -1,12 +1,17 @@
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import { Button } from "@/components/ui/button";
 import { Head, useForm } from "@inertiajs/react";
-import axios from "axios";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { showToast } from "@/lib/showToast";
 
-type Props = {};
+type Props = {
+    onSwitch: () => void;
+    flipVariants: any;
+};
 
-const Login = (props: Props) => {
+const Login = ({ onSwitch, flipVariants }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         email: "",
@@ -16,23 +21,31 @@ const Login = (props: Props) => {
     const handleSubmit = async (e: React.FormEvent) => {
         setIsLoading(true);
         e.preventDefault();
-        await axios
-            .post("/login", data)
-            .then((res) => {
-                window.dispatchEvent(new Event("cartUpdated"));
-                window.dispatchEvent(new Event("akunUpdated"));
-                window.dispatchEvent(new Event("productUpdated"));
-            })
-            .catch((err) => {
-                console.log(err);
+        try {
+            await axios.post("/login", data);
+            window.dispatchEvent(new Event("cartUpdated"));
+            window.dispatchEvent(new Event("akunUpdated"));
+            window.dispatchEvent(new Event("productUpdated"));
+        } catch (error: any) {
+            const { type, message } = error.response.data;
+            console.log("Error data:", error.response.data);
+            showToast({
+                type,
+                description: message,
             });
+        }
         setIsLoading(false);
     };
 
     return (
         <>
             <Head title="Login" />
-            <div>
+            <motion.div
+                variants={flipVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+            >
                 <form
                     onSubmit={handleSubmit}
                     className="w-full max-w-md p-8 bg-white rounded shadow"
@@ -92,7 +105,18 @@ const Login = (props: Props) => {
                         )}
                     </div>
                 </form>
-            </div>
+                <div>
+                    <p>
+                        Belum punya akun?{" "}
+                        <button
+                            className="text-secondary hover:underline"
+                            onClick={onSwitch}
+                        >
+                            Daftar
+                        </button>
+                    </p>
+                </div>
+            </motion.div>
         </>
     );
 };

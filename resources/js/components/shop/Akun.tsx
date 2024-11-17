@@ -4,7 +4,6 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import Login from "@/Pages/User/auth/Login";
 import { PersonIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -13,11 +12,37 @@ import Form from "@/Pages/User/akun/Form";
 import { Link } from "@inertiajs/react";
 type Props = {};
 
+import { AnimatePresence } from "framer-motion";
+import Login from "@/Pages/User/auth/Login";
+import Register from "@/Pages/User/auth/Register";
+import { Toaster } from "../ui/toaster";
+
+const flipVariants = {
+    enter: {
+        rotateY: 180,
+        opacity: 0,
+        transition: { duration: 0.5 },
+    },
+    center: {
+        rotateY: 0,
+        opacity: 1,
+        transition: { duration: 0.5 },
+    },
+    exit: {
+        rotateY: -180,
+        opacity: 0,
+        transition: { duration: 0.5 },
+    },
+};
+
 const Akun = (props: Props) => {
     const [open, setOpen] = useState(false);
     const [openForm, setOpenForm] = useState(false);
     const [user, setUser] = useState<any>();
     const [isChange, setIsChange] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
+
+    const toggleAuth = () => setIsLogin(!isLogin);
 
     // cek statue
     const cek = async () => {
@@ -55,6 +80,7 @@ const Akun = (props: Props) => {
                 console.log(err);
             });
     };
+
     return (
         <>
             <div
@@ -65,11 +91,25 @@ const Akun = (props: Props) => {
             </div>
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetContent className="">
+                    <Toaster />
                     <SheetHeader>
                         <SheetTitle>Akun anda</SheetTitle>
                     </SheetHeader>
-                    <div className="h-full ">
-                        {!user && <Login />}
+                    <AnimatePresence mode="wait">
+                        {!user &&
+                            (isLogin ? (
+                                <Login
+                                    key="login"
+                                    onSwitch={toggleAuth}
+                                    flipVariants={flipVariants}
+                                />
+                            ) : (
+                                <Register
+                                    flipVariants={flipVariants}
+                                    key="register"
+                                    onSwitch={toggleAuth}
+                                />
+                            ))}
                         {user && (
                             <div className="flex flex-col justify-between h-full pb-2">
                                 <div className="flex flex-col justify-between h-full">
@@ -193,7 +233,8 @@ const Akun = (props: Props) => {
                                 <Button onClick={logout}>Logout</Button>
                             </div>
                         )}
-                    </div>
+                    </AnimatePresence>
+                    <div className="h-full "></div>
                 </SheetContent>
             </Sheet>
         </>

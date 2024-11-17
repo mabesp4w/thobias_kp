@@ -28,6 +28,8 @@ Route::middleware('guest')->group(function () {
         return Inertia::location(route('user.home'));
     })->name('login');
     Route::post('/login', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
+    // register
+    Route::post('/register', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'register']);
 });
 
 Route::middleware('auth')->group(function () {
