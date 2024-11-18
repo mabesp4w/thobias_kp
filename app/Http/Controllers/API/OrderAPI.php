@@ -30,7 +30,7 @@ class OrderAPI
         // convert status to array
         $status = explode(',', $rq_status);
         $user_id = $request->user_id;
-        $data = Order::with(['orderItems.product.productImage', 'shippingCost', 'shippingStatus'])
+        $data = Order::with(['orderItems.product.productImage', 'shippingCost', 'shippingStatus', 'review'])
             ->whereIn('status', $status)
             ->where('user_id', $user_id)
             ->orderBy('created_at', 'desc')

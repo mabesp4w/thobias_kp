@@ -7,7 +7,7 @@ const RatingStars = ({ rating }: any) => {
 
     return (
         <section className="flex gap-x-2">
-            <div className="flex">
+            <div className="flex items-center">
                 {/* Bintang Penuh */}
                 {[...Array(fullStars)].map((_, index) => (
                     <StarFilledIcon
@@ -29,7 +29,7 @@ const RatingStars = ({ rating }: any) => {
                     />
                 ))}
             </div>
-            <p>{rating}</p>
+            <p className="text-sm">{rating}</p>
         </section>
     );
 };

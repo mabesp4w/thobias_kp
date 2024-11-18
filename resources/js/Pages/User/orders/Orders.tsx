@@ -46,8 +46,6 @@ const Orders = ({ MIDTRANS_CLIENT_KEY, user }: Props) => {
         handleTabChange(tabStatus);
     }, []);
 
-    console.log({ dtOrders });
-
     return (
         <main className="container mt-10">
             <Head title="Orders" />

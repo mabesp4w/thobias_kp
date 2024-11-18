@@ -5,12 +5,12 @@ namespace App\Http\Controllers\USER;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Order;
-use App\Models\ShippingStatus;
 use Midtrans\Transaction;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Midtrans\Notification;
+use Illuminate\Http\Request;
+use App\Models\ShippingStatus;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController
 {
@@ -80,43 +80,55 @@ class PaymentController
         $orderId = $notification->order_id;
         $fraud = $notification->fraud_status;
 
-        // Proses notifikasi berdasarkan status
-        if ($transaction == 'capture') {
-            if ($type == 'credit_card') {
-                if ($fraud == 'challenge') {
-                    // Transaksi perlu verifikasi manual
-                    Order::where('id', $orderId)->update(['status' => 'tunggu']);
-                } else {
-                    // Transaksi berhasil
-                    Order::where('id', $orderId)->update(['status' => 'dibayar']);
-                    // add shipping status
-                    ShippingStatus::create([
-                        'order_id' => $orderId,
-                        'user_id' => Auth::id(),
-                        'status' => 'dikemas'
-                    ]);
+        // Log data for debugging
+        Log::info('Payment Notification:', (array) $notification);
+
+
+        try {
+            // Proses notifikasi berdasarkan status
+            if ($transaction == 'capture') {
+                if ($type == 'credit_card') {
+                    if ($fraud == 'challenge') {
+                        // Transaksi perlu verifikasi manual
+                        Order::where('id', $orderId)->update(['status' => 'tunggu']);
+                    } else {
+                        // Transaksi berhasil
+                        Order::where('id', $orderId)->update(['status' => 'dibayar']);
+                        // add shipping status
+                        ShippingStatus::create([
+                            'order_id' => $orderId,
+                            'user_id' => Auth::id(),
+                            'status' => 'dikemas'
+                        ]);
+                    }
                 }
+            } elseif ($transaction == 'settlement') {
+                // Transaksi selesai
+                Order::where('id', $orderId)->update(['status' => 'dibayar']);
+                ShippingStatus::create([
+                    'order_id' => $orderId,
+                    'user_id' => Auth::id(),
+                    'status' => 'dikemas'
+                ]);
+            } elseif ($transaction == 'pending') {
+                // Transaksi menunggu pembayaran
+                Order::where('id', $orderId)->update(['status' => 'tunggu']);
+            } elseif ($transaction == 'deny') {
+                // Transaksi ditolak
+                Order::where('id', $orderId)->update(['status' => 'batal']);
+            } elseif ($transaction == 'expire') {
+                // Transaksi kadaluarsa
+                Order::where('id', $orderId)->update(['status' => 'batal']);
+            } elseif ($transaction == 'cancel') {
+                // Transaksi dibatalkan
+                Order::where('id', $orderId)->update(['status' => 'batal']);
             }
-        } elseif ($transaction == 'settlement') {
-            // Transaksi selesai
-            Order::where('id', $orderId)->update(['status' => 'dibayar']);
-            ShippingStatus::create([
-                'order_id' => $orderId,
-                'user_id' => Auth::id(),
-                'status' => 'dikemas'
-            ]);
-        } elseif ($transaction == 'pending') {
-            // Transaksi menunggu pembayaran
-            Order::where('id', $orderId)->update(['status' => 'tunggu']);
-        } elseif ($transaction == 'deny') {
-            // Transaksi ditolak
-            Order::where('id', $orderId)->update(['status' => 'batal']);
-        } elseif ($transaction == 'expire') {
-            // Transaksi kadaluarsa
-            Order::where('id', $orderId)->update(['status' => 'batal']);
-        } elseif ($transaction == 'cancel') {
-            // Transaksi dibatalkan
-            Order::where('id', $orderId)->update(['status' => 'batal']);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error processing notification',
+                'error' => $th
+            ], 500);
         }
 
         return response()->json(['message' => 'Notification processed successfully']);

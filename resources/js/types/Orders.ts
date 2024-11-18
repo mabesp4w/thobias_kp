@@ -1,4 +1,5 @@
 import OrderItemsTypes from "./OrderItems";
+import ReviewsTypes from "./Reviews";
 import ShippingCostsTypes from "./ShippingCosts";
 import ShippingStatusesTypes from "./ShippingStatuses";
 
@@ -15,4 +16,5 @@ export default interface OrdersTypes {
     created_at: string;
     shipping_cost: ShippingCostsTypes;
     shipping_status?: ShippingStatusesTypes;
+    review: ReviewsTypes[];
 }

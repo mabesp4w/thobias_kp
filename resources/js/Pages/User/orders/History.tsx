@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button";
 import showRupiah from "@/lib/rupiah";
 import { BASE_URL } from "@/services/baseURL";
-import useShippingStatuses from "@/store/crud/ShippingStatus";
 import OrdersTypes from "@/types/Orders";
+import Penilaian from "./Penilaian";
+import { useState } from "react";
 
 type Props = {
     order: OrdersTypes;
 };
 
 const History = ({ order }: Props) => {
-    const { updateData } = useShippingStatuses();
-
+    console.log({ order });
+    const [openDialog, setOpenDialog] = useState(false);
     return (
         <section className="container mt-10 flex flex-col gap-5">
             <div className="flex flex-col">
@@ -46,7 +47,7 @@ const History = ({ order }: Props) => {
                         {showRupiah(order.total_price)}
                     </span>
                 </div>
-                <div className="flex items-center mt-2">
+                <div className="flex items-center mt-4">
                     <div className="flex flex-col">
                         <span className="text-primary font-bold capitalize">
                             Status Pesanan: {order.status}
@@ -58,14 +59,27 @@ const History = ({ order }: Props) => {
                             </span>
                         )}
                     </div>
-                    {order?.shipping_status && (
-                        <Button
-                            variant={"outline"}
-                            className="ml-auto hover:bg-secondary hover:text-secondary-foreground"
-                            onClick={() => {}}
-                        >
-                            Penilaian
-                        </Button>
+                    {(order?.shipping_status?.status === "dikirim" ||
+                        order?.shipping_status?.status === "diterima") && (
+                        <>
+                            <Button
+                                variant={"outline"}
+                                className="ml-auto border-secondary hover:bg-secondary hover:text-secondary-foreground"
+                                onClick={() => {
+                                    setOpenDialog(true);
+                                }}
+                            >
+                                {order.review.length > 0
+                                    ? "Lihat"
+                                    : "Penilaian"}
+                            </Button>
+                            <Penilaian
+                                openDialog={openDialog}
+                                setOpenDialog={setOpenDialog}
+                                user_id={order.user_id}
+                                order={order}
+                            />
+                        </>
                     )}
                 </div>
             </div>
