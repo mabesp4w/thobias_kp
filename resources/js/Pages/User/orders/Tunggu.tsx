@@ -30,7 +30,7 @@ const Tunggu = ({ order, snapLoaded }: Props) => {
             const timeFormatted = `${duration.hours()} jam, ${duration.minutes()} menit, ${duration.seconds()} detik`;
             setTimeLeft(timeFormatted);
 
-            if (duration.asSeconds() <= 1) {
+            if (duration.asSeconds() <= 0) {
                 clearInterval(interval);
                 setTimeLeft("Time is up!");
             }

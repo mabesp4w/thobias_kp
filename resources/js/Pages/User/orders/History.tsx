@@ -1,5 +1,7 @@
+import { Button } from "@/components/ui/button";
 import showRupiah from "@/lib/rupiah";
 import { BASE_URL } from "@/services/baseURL";
+import useShippingStatuses from "@/store/crud/ShippingStatus";
 import OrdersTypes from "@/types/Orders";
 
 type Props = {
@@ -7,7 +9,7 @@ type Props = {
 };
 
 const History = ({ order }: Props) => {
-    console.log({ order });
+    const { updateData } = useShippingStatuses();
 
     return (
         <section className="container mt-10 flex flex-col gap-5">
@@ -18,7 +20,7 @@ const History = ({ order }: Props) => {
                         ? `${BASE_URL}/${img.product_img}`
                         : "/images/no_image.png";
                     return (
-                        <div className="flex border-y h-24">
+                        <div className="flex border-y h-24" key={item.id}>
                             <img
                                 src={urlImg}
                                 alt={item.product.product_nm}
@@ -43,6 +45,28 @@ const History = ({ order }: Props) => {
                     <span className="text-primary font-bold">
                         {showRupiah(order.total_price)}
                     </span>
+                </div>
+                <div className="flex items-center mt-2">
+                    <div className="flex flex-col">
+                        <span className="text-primary font-bold capitalize">
+                            Status Pesanan: {order.status}
+                        </span>
+                        {order?.shipping_status && (
+                            <span className="font-bold capitalize">
+                                Status Pengiriman:{" "}
+                                {order.shipping_status.status}
+                            </span>
+                        )}
+                    </div>
+                    {order?.shipping_status && (
+                        <Button
+                            variant={"outline"}
+                            className="ml-auto hover:bg-secondary hover:text-secondary-foreground"
+                            onClick={() => {}}
+                        >
+                            Penilaian
+                        </Button>
+                    )}
                 </div>
             </div>
         </section>

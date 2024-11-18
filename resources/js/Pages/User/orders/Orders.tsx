@@ -46,6 +46,8 @@ const Orders = ({ MIDTRANS_CLIENT_KEY, user }: Props) => {
         handleTabChange(tabStatus);
     }, []);
 
+    console.log({ dtOrders });
+
     return (
         <main className="container mt-10">
             <Head title="Orders" />
@@ -56,7 +58,9 @@ const Orders = ({ MIDTRANS_CLIENT_KEY, user }: Props) => {
             >
                 <TabsList>
                     <TabsTrigger value="tunggu">Tunggu</TabsTrigger>
-                    <TabsTrigger value="selesai">Selesai</TabsTrigger>
+                    <TabsTrigger value="selesai,dibayar,dikirim">
+                        Selesai
+                    </TabsTrigger>
                     <TabsTrigger value="expired">Batal</TabsTrigger>
                 </TabsList>
                 <TabsContent value="tunggu">
@@ -72,7 +76,7 @@ const Orders = ({ MIDTRANS_CLIENT_KEY, user }: Props) => {
                         </section>
                     )}
                 </TabsContent>
-                <TabsContent value="selesai">
+                <TabsContent value="selesai,dibayar,dikirim">
                     {dtOrders.length > 0 ? (
                         dtOrders.map((item) => (
                             <History key={item.id} order={item} />

@@ -27,4 +27,10 @@ class Order extends Model
     {
         return $this->hasOne(ShippingCost::class, 'id', 'shipping_cost_id');
     }
+
+    // has one shipping status
+    public function shippingStatus()
+    {
+        return $this->hasOne(ShippingStatus::class, 'order_id', 'id');
+    }
 }

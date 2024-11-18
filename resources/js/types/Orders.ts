@@ -1,5 +1,6 @@
 import OrderItemsTypes from "./OrderItems";
 import ShippingCostsTypes from "./ShippingCosts";
+import ShippingStatusesTypes from "./ShippingStatuses";
 
 // orders
 export default interface OrdersTypes {
@@ -13,4 +14,5 @@ export default interface OrdersTypes {
     snap_token: string;
     created_at: string;
     shipping_cost: ShippingCostsTypes;
+    shipping_status?: ShippingStatusesTypes;
 }
