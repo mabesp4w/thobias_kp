@@ -43,9 +43,10 @@ const Index = ({ carts, MIDTRANS_CLIENT_KEY }: Props) => {
         return (
             <>
                 <Head title="Checkout" />
-                <Toaster />
-                <div className="flex items-center justify-center h-screen">
-                    <h1>Loading...</h1>
+                <div className="flex items-center justify-center h-fulls w-full">
+                    <h1 className="text-2xl text-primary">
+                        Silahkan melengkapi data untuk lanjut ke checkout
+                    </h1>
                 </div>
             </>
         );

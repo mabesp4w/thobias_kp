@@ -21,12 +21,16 @@ class OrderUserController
     // active
     public function index()
     {
-        $order = Order::with(['orderItems.product.productImage', 'user'])
-            ->whereNotIn('status', ['completed', 'delivery']) // Menambahkan 'delivery' ke dalam kondisi
+        $order = Order::with(['orderItems.product.productImage', 'user', 'shippingCost'])
+            ->where('status', 'tunggu')
+            ->where('user_id', Auth::id())
             ->first();
+        $MIDTRANS_CLIENT_KEY = Config::$serverKey = config('services.midtrans.client_key');
         // return inertia
         return inertia('User/orders/Orders', [
             'order' => $order,
+            'MIDTRANS_CLIENT_KEY' => $MIDTRANS_CLIENT_KEY,
+            'user' => Auth::user()
         ]);
     }
 }

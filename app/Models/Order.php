@@ -21,4 +21,10 @@ class Order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // has one shipping cost
+    public function shippingCost()
+    {
+        return $this->hasOne(ShippingCost::class, 'id', 'shipping_cost_id');
+    }
 }

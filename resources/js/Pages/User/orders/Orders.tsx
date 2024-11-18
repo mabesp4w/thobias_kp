@@ -1,17 +1,23 @@
-import OrdersTypes from "@/types/Orders";
-import { Head, router } from "@inertiajs/react";
-import DetailsOrder from "./DetailsOrder";
+import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useOrdersApi from "@/store/api/Orders";
+import History from "./History";
+import { User } from "@/types";
+import Tunggu from "./Tunggu";
 
 type Props = {
-    order: OrdersTypes;
     MIDTRANS_CLIENT_KEY?: string;
+    user: User;
 };
 
-const Orders = ({ order, MIDTRANS_CLIENT_KEY }: Props) => {
+const Orders = ({ MIDTRANS_CLIENT_KEY, user }: Props) => {
     // state
+    const [tabStatus, setTabStatus] = useState("tunggu");
     const [snapLoaded, setSnapLoaded] = useState<boolean>(false);
+    // store
+    const { setOrdersAll, dtOrders } = useOrdersApi();
+
     useEffect(() => {
         // event cartUpdated
         window.dispatchEvent(new Event("cartUpdated"));
@@ -32,60 +38,68 @@ const Orders = ({ order, MIDTRANS_CLIENT_KEY }: Props) => {
         };
     }, []);
 
-    console.log({ order });
-
-    const openSnap = async () => {
-        if (!snapLoaded) {
-            alert("Snap.js is not loaded yet!");
-            return;
-        }
-        // @ts-ignore
-        window.snap.pay(order.snap_token, {
-            onSuccess: function (result: any) {
-                /* Handle success */
-                console.log({ result });
-                router.visit("/orders");
-            },
-            onPending: function (result: any) {
-                /* Handle pending */
-                console.log({ result });
-                router.visit("/orders");
-            },
-            onError: function (result: any) {
-                /* Handle error */
-                console.log({ result });
-                router.visit("/orders");
-            },
-            onClose: function () {
-                /* Handle when user close the popup without finishing payment */
-                console.log("user closed the popup");
-            },
-        });
+    const handleTabChange = async (value: string) => {
+        await setOrdersAll({ status: value, user_id: user.id });
     };
 
+    useEffect(() => {
+        handleTabChange(tabStatus);
+    }, []);
+
     return (
-        <>
+        <main className="container mt-10">
             <Head title="Orders" />
-            <section className="container mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* rincian */}
-                <div className="border">
-                    <h1>Rincian pesanan</h1>
-                    <div>
-                        {order?.order_items.map((item) => (
-                            <DetailsOrder
-                                product={item.product}
-                                key={item.id}
-                            />
-                        ))}
-                    </div>
-                </div>
-                {/* metode pembayaran */}
-                <div className="border">
-                    <h1>Metode pembayaran</h1>
-                    <Button onClick={openSnap}>Bayar</Button>
-                </div>
-            </section>
-        </>
+            <Tabs
+                defaultValue="tunggu"
+                onValueChange={handleTabChange}
+                className="w-full"
+            >
+                <TabsList>
+                    <TabsTrigger value="tunggu">Tunggu</TabsTrigger>
+                    <TabsTrigger value="selesai">Selesai</TabsTrigger>
+                    <TabsTrigger value="expired">Batal</TabsTrigger>
+                </TabsList>
+                <TabsContent value="tunggu">
+                    {dtOrders.length > 0 ? (
+                        dtOrders.map((item) => (
+                            <Tunggu key={item.id} order={item} snapLoaded />
+                        ))
+                    ) : (
+                        <section className="container mt-10">
+                            <h1 className="text-center font-bold">
+                                Tidak ada pesanan
+                            </h1>
+                        </section>
+                    )}
+                </TabsContent>
+                <TabsContent value="selesai">
+                    {dtOrders.length > 0 ? (
+                        dtOrders.map((item) => (
+                            <History key={item.id} order={item} />
+                        ))
+                    ) : (
+                        <section className="container mt-10">
+                            <h1 className="text-center font-bold">
+                                Tidak ada pesanan
+                            </h1>
+                        </section>
+                    )}
+                </TabsContent>
+                <TabsContent value="expired">
+                    {dtOrders.length > 0 ? (
+                        dtOrders.map((item) => (
+                            <History key={item.id} order={item} />
+                        ))
+                    ) : (
+                        <section className="container mt-10">
+                            <h1 className="text-center font-bold">
+                                Tidak ada pesanan
+                            </h1>
+                        </section>
+                    )}
+                </TabsContent>
+            </Tabs>
+        </main>
     );
 };
 

@@ -107,7 +107,7 @@ const Question: FC<Props> = ({
         <DefaultDialog
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
-            title={`Proses Pembayaran?`}
+            title={`Lanjut Ke Proses Pembayaran ?`}
         >
             <p>
                 Anda tidak dapat mengubah pesanan setelah melanjutkan ke proses

@@ -7,7 +7,7 @@ export default interface OrderItemsTypes {
     product_id: string;
     user_id: string;
     order_id: string;
-    qty: number;
+    quantity: number;
     total_price: number;
     product: ProductsTypes;
     order: OrdersTypes;

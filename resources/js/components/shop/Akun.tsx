@@ -9,7 +9,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Form from "@/Pages/User/akun/Form";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 type Props = {};
 
 import { AnimatePresence } from "framer-motion";
@@ -75,6 +75,7 @@ const Akun = (props: Props) => {
                 window.dispatchEvent(new Event("cartUpdated"));
                 window.dispatchEvent(new Event("productUpdated"));
                 setUser(null);
+                router.visit("/");
             })
             .catch((err) => {
                 console.log(err);
@@ -102,6 +103,7 @@ const Akun = (props: Props) => {
                                     key="login"
                                     onSwitch={toggleAuth}
                                     flipVariants={flipVariants}
+                                    cek={cek}
                                 />
                             ) : (
                                 <Register

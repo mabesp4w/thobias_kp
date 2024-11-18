@@ -27,10 +27,10 @@ const Register = ({ onSwitch, flipVariants }: Props) => {
         try {
             const response = await axios.post("/register", data);
             console.log("Response:", response);
-            setIsLoading(false);
             window.dispatchEvent(new Event("cartUpdated"));
             window.dispatchEvent(new Event("akunUpdated"));
             window.dispatchEvent(new Event("productUpdated"));
+            setIsLoading(false);
         } catch (error: any) {
             if (error.response) {
                 const { type, message } = error.response.data;
@@ -40,14 +40,12 @@ const Register = ({ onSwitch, flipVariants }: Props) => {
                     type,
                     description: message,
                 });
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.log("Error request:", error.request);
+                setIsLoading(false);
             } else {
                 // Something happened in setting up the request that triggered an Error
                 console.log("Error message:", error.message);
+                setIsLoading(false);
             }
-            setIsLoading(false);
         }
     };
 

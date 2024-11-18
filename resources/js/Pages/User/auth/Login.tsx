@@ -9,9 +9,10 @@ import { showToast } from "@/lib/showToast";
 type Props = {
     onSwitch: () => void;
     flipVariants: any;
+    cek: () => void;
 };
 
-const Login = ({ onSwitch, flipVariants }: Props) => {
+const Login = ({ onSwitch, flipVariants, cek }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         email: "",
@@ -22,10 +23,11 @@ const Login = ({ onSwitch, flipVariants }: Props) => {
         setIsLoading(true);
         e.preventDefault();
         try {
-            await axios.post("/login", data);
+            const res = await axios.post("/login", data);
             window.dispatchEvent(new Event("cartUpdated"));
             window.dispatchEvent(new Event("akunUpdated"));
             window.dispatchEvent(new Event("productUpdated"));
+            cek();
         } catch (error: any) {
             const { type, message } = error.response.data;
             console.log("Error data:", error.response.data);

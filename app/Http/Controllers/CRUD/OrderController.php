@@ -85,8 +85,8 @@ class OrderController
                 unset($item['product']);
                 $order->orderItems()->create($item);
                 // delete cart
-                Cart::where('user_id', $request->user_id)->delete();
             }
+            Cart::where('user_id', $request->user_id)->delete();
             DB::commit();
             return new CrudResource('success', 'Data Berhasil Disimpan', $order->load('orderItems'));
         } catch (\Throwable $th) {
@@ -125,12 +125,7 @@ class OrderController
         }
 
         $order = Order::findOrFail($id);
-        $order->update($request->only(['user_id', 'shipping_cost_id', 'total_price', 'total_payment', 'status']));
-
-        $order->orderItems()->delete(); // Delete existing items
-        foreach ($request->items as $item) {
-            $order->orderItems()->create($item);
-        }
+        $order->update($request->only(['status']));
 
         return new CrudResource('success', 'Data Berhasil Diubah', $order->load('orderItems'));
     }

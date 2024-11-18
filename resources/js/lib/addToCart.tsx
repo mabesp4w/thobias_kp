@@ -13,10 +13,6 @@ const addToCart = async ({
     isLoggedIn,
     costumQuantity,
 }: Props) => {
-    // const isLoggedIn = checkLoginStatus(); // Fungsi untuk mengecek status login
-    // const endpoint = isLoggedIn
-    //     ? "/carts/addToCartDatabase"
-    //     : "/carts/addToCartSession";
     let endpoint = "";
     if (isLoggedIn) {
         if (costumQuantity) {
