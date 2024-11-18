@@ -32,4 +32,16 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    // hasMany review
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    // hasMany orderItem
+    public function orderItem()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

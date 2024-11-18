@@ -18,6 +18,7 @@ import addToWishlist from "@/lib/addToWishlits";
 import addToCart from "@/lib/addToCart";
 import { router } from "@inertiajs/react";
 import axios from "axios";
+import RatingStars from "@/components/shop/RatingStars";
 
 type Props = {
     product: ProductsTypes;
@@ -59,6 +60,7 @@ function ThumbnailPlugin(
 
 const CardDetail: FC<Props> = ({ product }) => {
     const [value, setValue] = useState(1);
+    const [average, setAverage] = useState(0);
 
     const increment = () => setValue((prevValue) => prevValue + 1);
     const decrement = () => setValue((prevValue) => Math.max(prevValue - 1, 1)); // Nilai tidak bisa kurang dari 1
@@ -104,6 +106,40 @@ const CardDetail: FC<Props> = ({ product }) => {
             router.visit("/checkout");
         }
     };
+
+    // avarage rating
+
+    useEffect(() => {
+        if (product.review.length > 0) {
+            const totalRating = product.review.reduce(
+                (total: number, review: any) => total + review.rating,
+                0
+            );
+            const averageRating = totalRating / product.review.length;
+            setAverage(averageRating);
+        }
+
+        return () => {};
+    }, []);
+
+    console.log({ product });
+
+    const [completedOrdersCount, setCompletedOrdersCount] = useState(0);
+
+    useEffect(() => {
+        const countCompletedOrders = () => {
+            const count = product.order_item.reduce((acc, item) => {
+                if (item.order.status === "selesai") {
+                    return acc + 1;
+                }
+                return acc;
+            }, 0);
+            setCompletedOrdersCount(count);
+        };
+
+        countCompletedOrders();
+    }, [product]);
+
     return (
         <section className="">
             <div className="flex flex-col lg:flex-row gap-x-12">
@@ -169,13 +205,15 @@ const CardDetail: FC<Props> = ({ product }) => {
                             {showRupiah(product.price)}
                         </h4>
                     </div>
-                    <div className="flex gap-x-2">
-                        {/* peniliaian */}
-                        {/* <RatingStars rating={3.5} /> */}
-                        <p>Belum ada penilaian</p>
+                    <div className="flex gap-x-2 items-center">
+                        {average > 0 ? (
+                            <RatingStars rating={average} />
+                        ) : (
+                            <p>Belum ada penilaian</p>
+                        )}
                         {/* terjual */}
                         <p>
-                            | <span>0</span> Terjual
+                            | <span>{completedOrdersCount}</span> Terjual
                         </p>
                     </div>
                     {/* jumlah */}

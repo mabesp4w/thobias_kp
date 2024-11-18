@@ -16,7 +16,7 @@ class ProductUserController
         $order = $request->order;
 
         $products = Product::where('sub_category_id', $sub_category_id)
-            ->with(['subCategory.category', 'productImage'])
+            ->with(['subCategory.category', 'productImage', 'review.user'])
             ->orderBy($sortby ?? 'created_at', $order ?? 'desc')
             ->where('product_nm', 'like', "%$search%")
             ->paginate(12);
@@ -32,7 +32,7 @@ class ProductUserController
 
     function detail($id)
     {
-        $product = Product::with(['subCategory.category', 'productImage'])->find($id);
+        $product = Product::with(['subCategory.category', 'productImage', 'review.user', 'orderItem.order'])->find($id);
         return Inertia::render('User/products/Detail', [
             'product' => $product
         ]);
