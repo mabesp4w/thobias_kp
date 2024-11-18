@@ -3,10 +3,18 @@ import Cart from "../shop/Cart";
 import Wishlist from "../shop/Wishlist";
 import Akun from "../shop/Akun";
 import NavbarComp from "../navbar/NavbarComp";
+import { useState } from "react";
+import { router } from "@inertiajs/react";
 
 type Props = {};
 
 const HeaderComp = (props: Props) => {
+    const [search, setSearch] = useState("");
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get("/products", { search });
+    };
     return (
         <main className="flex flex-col md:mb-20">
             <section className="h-24 flex justify-between items-center">
@@ -18,13 +26,19 @@ const HeaderComp = (props: Props) => {
                         </span>
                     </div>
                     {/* search */}
-                    <div className="md:flex items-center border rounded-full px-3 w-96 hidden">
-                        <input
-                            className="border-none focus-visible:ring-0 outline-none w-full"
-                            placeholder="Cari"
-                        />
-                        <BsSearch />
-                    </div>
+                    <form onSubmit={handleSearch}>
+                        <div className="md:flex items-center border rounded-full px-3 w-96 hidden">
+                            <input
+                                className="border-none focus-visible:ring-0 outline-none w-full"
+                                placeholder="Cari Produk"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <button type="submit">
+                                <BsSearch />
+                            </button>
+                        </div>
+                    </form>
                 </div>
                 {/* login & cart */}
                 <div className="flex items-center gap-6">

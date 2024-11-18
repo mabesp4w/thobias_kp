@@ -74,7 +74,7 @@ const Penilaian = ({ openDialog, setOpenDialog, user_id, order }: Props) => {
                         return (
                             <div
                                 key={item.id}
-                                className="flex flex-col border-b"
+                                className="flex flex-col border-b shadow-md"
                             >
                                 <h1>{item.product.product_nm}</h1>
                                 <p>

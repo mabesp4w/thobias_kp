@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 
 class ProductUserController
 {
+    public function index(Request $request)
+    {
+        $query = $request->input('search'); // Ambil parameter 'search'
+        $products = Product::query();
+
+        if ($query) {
+            $products->where('product_nm', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%");
+        }
+
+        return inertia('User/products/Search', [
+            'products' => $products->with(['subCategory.category', 'productImage', 'review.user'])->paginate(10),
+            'search' => $query,
+        ]);
+    }
     public function subCategory($category_slug, $sub_category_id, Request $request)
     {
         $search = $request->search;
