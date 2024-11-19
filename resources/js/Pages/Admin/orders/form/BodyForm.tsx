@@ -1,11 +1,11 @@
-import InputTextDefault from "@/components/input/InputTextDefault";
-import CategoriesTypes from "@/types/Categories";
+import SelectDef from "@/components/select/SelectDef";
+import ShippingStatusesTypes from "@/types/ShippingStatuses";
 import { FC } from "react";
 
 type Props = {
     register: any;
-    errors: CategoriesTypes;
-    dtEdit: CategoriesTypes | null;
+    errors: ShippingStatusesTypes;
+    dtEdit: ShippingStatusesTypes | null;
     control: any;
     watch: any;
     setValue: any;
@@ -15,14 +15,19 @@ type Props = {
 const BodyForm: FC<Props> = ({ register, errors, showModal, control }) => {
     return (
         <>
-            <InputTextDefault
-                label="Nama Kategori"
-                name="category_nm"
-                register={register}
+            <SelectDef
+                name="status"
+                label="Status Kirim"
+                placeholder="Pilih Status Kirim"
+                options={[
+                    { value: "dikemas", label: "Dikemas" },
+                    { value: "dikirim", label: "Dikirim" },
+                    { value: "diterima", label: "Diterima" },
+                ]}
+                addClass={"col-span-8"}
                 required
-                minLength={2}
-                errors={errors.category_nm}
-                addClass="col-span-8"
+                errors={errors.status}
+                control={control}
             />
         </>
     );

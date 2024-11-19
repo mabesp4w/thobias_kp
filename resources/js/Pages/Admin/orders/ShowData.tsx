@@ -89,7 +89,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
                             setEdit,
                             (rowId) =>
                                 setDelete({ id: rowId, isDelete: false }),
-                            false,
+                            true,
                             false
                         )}
                         filters={nestedFilters.map(

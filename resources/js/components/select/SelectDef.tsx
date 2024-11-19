@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import { Controller } from "react-hook-form";
 
 type Props = {
@@ -32,6 +32,31 @@ const SelectDef: FC<Props> = ({
             setMenuPortalTarget(document.body);
         }
     }, []);
+    const styles: StylesConfig<any, true> = {
+        menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999,
+            pointerEvents: "auto",
+        }),
+        multiValue: (base, state) => {
+            return state.data.isFixed
+                ? { ...base, backgroundColor: "gray" }
+                : base;
+        },
+        multiValueLabel: (base, state) => {
+            return state.data.isFixed
+                ? {
+                      ...base,
+                      fontWeight: "bold",
+                      color: "white",
+                      paddingRight: 6,
+                  }
+                : base;
+        },
+        multiValueRemove: (base, state) => {
+            return state.data.isFixed ? { ...base, display: "none" } : base;
+        },
+    };
     return (
         <div className={addClass}>
             {label && (
@@ -63,6 +88,10 @@ const SelectDef: FC<Props> = ({
                             onChange={(option: any) =>
                                 onChange(option ? option.value : option)
                             }
+                            menuPortalTarget={
+                                menuPortalTarget ? document.body : null
+                            }
+                            styles={styles}
                         />
                     )}
                 />

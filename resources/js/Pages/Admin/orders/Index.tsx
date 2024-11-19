@@ -2,12 +2,12 @@ import ShowData from "./ShowData";
 
 import { useState } from "react";
 import Form from "./form/Form";
-import OrdersTypes from "@/types/Orders";
 import { Toaster } from "@/components/ui/toaster";
 import useOrders from "@/store/crud/Orders";
 import { showToast } from "@/lib/showToast";
 import { Head } from "@inertiajs/react";
 import DeleteDialog from "@/components/dialog/DeleteDialog";
+import ShippingStatusesTypes from "@/types/ShippingStatuses";
 
 // type setDelete
 type Delete = {
@@ -21,18 +21,14 @@ const Index = () => {
     const { removeData } = useOrders();
     // state
     const [openDialog, setOpenDialog] = useState(false);
-    const [dtEdit, setDtEdit] = useState<OrdersTypes | null>();
+    const [dtEdit, setDtEdit] = useState<ShippingStatusesTypes | null>();
     const [idDel, setIdDel] = useState<number | string>();
     const [showDelete, setShowDelete] = useState<boolean>(false);
 
-    const handleTambah = () => {
-        setOpenDialog(true);
-        setDtEdit(null);
-    };
-
     const setEdit = (row: any) => {
+        console.log({ row });
         setOpenDialog(true);
-        setDtEdit(row);
+        setDtEdit(row.shipping_status);
     };
 
     const setDelete = async ({ id, isDelete }: Delete) => {

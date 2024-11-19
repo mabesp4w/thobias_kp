@@ -82,8 +82,6 @@ class PaymentController
 
         // Log data for debugging
         Log::info('Payment Notification:', (array) $notification);
-
-
         try {
             // Proses notifikasi berdasarkan status
             if ($transaction == 'capture') {

@@ -9,11 +9,12 @@ import BodyForm from "./BodyForm";
 import LoadingSpiner from "@/components/loading/LoadingSpiner";
 import BtnDefault from "@/components/button/BtnDefault";
 import DefaultDialog from "@/components/dialog/DefaultDialog";
+import ShippingStatusesTypes from "@/types/ShippingStatuses";
 
 type Props = {
     openDialog: boolean;
     setOpenDialog: Dispatch<SetStateAction<boolean>>;
-    dtEdit?: OrdersTypes | null;
+    dtEdit?: ShippingStatusesTypes | null;
     halaman?: string;
 };
 
@@ -37,12 +38,14 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
     // reset form
     const resetForm = () => {
         setValue("id", "");
+        setValue("status", "");
     };
 
     // data edit
     useEffect(() => {
         if (dtEdit) {
             setValue("id", dtEdit.id);
+            setValue("status", dtEdit.status);
         } else {
             resetForm();
         }
@@ -65,7 +68,7 @@ const Form: FC<Props> = ({ openDialog, setOpenDialog, dtEdit, halaman }) => {
         <DefaultDialog
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
-            title={`Form ${halaman}`}
+            title={`Status Kirim`}
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <InputTextDefault name="id" register={register} type="hidden" />
