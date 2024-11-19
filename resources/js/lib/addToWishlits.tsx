@@ -1,21 +1,21 @@
 import Cookies from "js-cookie";
 
-const addToWishlist = async (productId: string) => {
+const addToWishlist = async (product_id: string) => {
     // const isLoggedIn = checkLoginStatus(); // Fungsi untuk mengecek status login
     const isLoggedIn = false;
 
     if (isLoggedIn) {
         await fetch("/api/wish", {
             method: "POST",
-            body: JSON.stringify({ productId }),
+            body: JSON.stringify({ product_id }),
         });
     } else {
         // Ambil wish dari cookies atau buat array kosong jika belum ada
         const wish = JSON.parse(Cookies.get("wish") || "[]");
 
-        // Cari produk dalam wish berdasarkan productId
+        // Cari produk dalam wish berdasarkan product_id
         const existingProduct = wish.find(
-            (item: { productId: string }) => item.productId === productId
+            (item: { product_id: string }) => item.product_id === product_id
         );
 
         if (existingProduct) {
@@ -23,7 +23,7 @@ const addToWishlist = async (productId: string) => {
             // existingProduct.quantity += quantity;
         } else {
             // Jika produk belum ada, tambahkan produk baru ke wish
-            wish.push({ productId });
+            wish.push({ product_id });
         }
 
         // Simpan kembali wish ke cookies
