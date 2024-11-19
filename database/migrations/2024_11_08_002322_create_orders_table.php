@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('total_price');
             $table->integer('total_payment');
             $table->text('snap_token');
-            $table->string('status');
+            $table->string('status'); // tunggu, dibayar, batal, selesai
             $table->timestamps();
         });
     }

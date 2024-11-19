@@ -12,6 +12,7 @@ interface Props {
 }
 
 export default function Welcome({ banners, newProduct, bestSeller }: Props) {
+    console.log({ bestSeller });
     return (
         <>
             <Head title="Home" />
@@ -25,8 +26,8 @@ export default function Welcome({ banners, newProduct, bestSeller }: Props) {
                     <h3 className="text-center text-2xl font-bold uppercase mb-4">
                         Produk Terlaris
                     </h3>
-                    {newProduct?.length > 0 && (
-                        <NewProducts newProduct={newProduct} />
+                    {bestSeller?.length > 0 && (
+                        <NewProducts newProduct={bestSeller} />
                     )}
                 </ScrollRevealComponent>
                 {/* section */}

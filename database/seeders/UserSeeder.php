@@ -17,10 +17,10 @@ class UserSeeder extends Seeder
     {
         User::create([
             'id' => Str::uuid(),
-            'name' => 'User',
-            'email' => 'user@mail.com',
+            'name' => 'Admin',
+            'email' => 'admin@mail.com',
             'password' => Hash::make('12345678'),
-            'role' => 'user',
+            'role' => 'admin',
         ]);
     }
 }

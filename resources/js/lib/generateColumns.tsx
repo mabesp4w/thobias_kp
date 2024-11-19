@@ -19,7 +19,9 @@ type ColumnConfig<T> = {
 export function generateColumns<T extends { id: string }>(
     dynamicColumns: ColumnConfig<T>[],
     setEdit: (row: T) => void,
-    setDelete: (rowId: string) => void
+    setDelete: (rowId: string) => void,
+    showEdit: boolean = true, // Default true jika tidak diberikan nilai
+    showDelete: boolean = true // Default true jika tidak diberikan nilai
 ): ColumnDef<T>[] {
     return [
         {
@@ -40,6 +42,9 @@ export function generateColumns<T extends { id: string }>(
             cell: ({ row }) => {
                 const { original } = row;
                 const rowId = original.id;
+                if (!showEdit && !showDelete) {
+                    return <></>;
+                }
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -50,12 +55,26 @@ export function generateColumns<T extends { id: string }>(
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => setEdit(original)}>
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setDelete(rowId)}>
-                                Hapus
-                            </DropdownMenuItem>
+                            {showEdit && (
+                                <DropdownMenuItem
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setEdit(original);
+                                    }}
+                                >
+                                    Edit
+                                </DropdownMenuItem>
+                            )}
+                            {showDelete && (
+                                <DropdownMenuItem
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setDelete(rowId);
+                                    }}
+                                >
+                                    Hapus
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );

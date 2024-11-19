@@ -10,6 +10,7 @@ type Props = {
     search?: string;
     sortby?: string;
     order?: string;
+    status?: string;
 };
 
 type Store = {
@@ -19,7 +20,14 @@ type Store = {
         data: OrdersTypes[];
     };
 
-    setOrders: ({ page, limit, search, sortby, order }: Props) => Promise<{
+    setOrders: ({
+        page,
+        limit,
+        search,
+        sortby,
+        order,
+        status,
+    }: Props) => Promise<{
         status: string;
         data?: {};
         error?: {};
@@ -52,7 +60,14 @@ const useOrders = create(
             current_page: 0,
             data: [],
         },
-        setOrders: async ({ page = 1, limit = 10, search, sortby, order }) => {
+        setOrders: async ({
+            page = 1,
+            limit = 10,
+            search,
+            sortby,
+            order,
+            status,
+        }) => {
             try {
                 const token = await useLogin.getState().setToken();
                 const response = await crud({
@@ -65,6 +80,7 @@ const useOrders = create(
                         search,
                         sortby,
                         order,
+                        status,
                     },
                 });
                 set((state) => ({

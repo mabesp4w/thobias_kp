@@ -45,3 +45,8 @@ Route::group(['prefix' => 'products'], function () {
         ]);
     })->name('admin.products.images');
 });
+
+// orders
+Route::get('orders', function () {
+    return Inertia::render('Admin/orders/Index');
+});

@@ -24,13 +24,13 @@ const Login = ({ onSwitch, flipVariants, cek }: Props) => {
         e.preventDefault();
         try {
             const res = await axios.post("/login", data);
+            console.log({ res });
             window.dispatchEvent(new Event("cartUpdated"));
             window.dispatchEvent(new Event("akunUpdated"));
             window.dispatchEvent(new Event("productUpdated"));
             cek();
         } catch (error: any) {
             const { type, message } = error.response.data;
-            console.log("Error data:", error.response.data);
             showToast({
                 type,
                 description: message,

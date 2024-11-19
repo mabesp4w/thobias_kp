@@ -47,6 +47,9 @@ const Akun = (props: Props) => {
     // cek statue
     const cek = async () => {
         const res = await axios.get("/status");
+        if (res.data.user.role !== "user") {
+            router.visit("/admin");
+        }
         setUser(res.data.user);
     };
 

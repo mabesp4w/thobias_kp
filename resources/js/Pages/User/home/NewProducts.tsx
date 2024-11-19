@@ -121,7 +121,10 @@ const NewProducts: FC<Props> = ({ newProduct }) => {
                 {newProduct.map((product) => {
                     const { product_nm, price, sub_category, product_image } =
                         product;
-                    const imgSrc = product_image?.[0]?.product_img;
+                    const imgSrc =
+                        product_image.find((img) => img.position === 1)
+                            ?.product_img || product_image[0]?.product_img;
+
                     return (
                         <Card
                             className="md:w-[300px] w-[200px] keen-slider__slide flex flex-col gap-y-4 border-none shadow-none cursor-pointer z-10"

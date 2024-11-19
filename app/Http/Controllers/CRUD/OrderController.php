@@ -43,13 +43,17 @@ class OrderController
         $search = $request->search;
         $sortby = $request->sortby;
         $order = $request->order;
+        $status = explode(',', $request->status);
 
-        $orders = Order::with('orderItems')
+        $orders = Order::with(['user.userInfo', 'orderItems.product.productImage', 'shippingCost.village.subDistrict', 'review', 'shippingStatus'])
             ->where(function ($query) use ($search) {
                 $query->where('status', 'like', "%$search%");
             })
             ->when($sortby, function ($query) use ($sortby, $order) {
                 $query->orderBy($sortby, $order ?? 'asc');
+            })
+            ->when($status, function ($query) use ($status) {
+                $query->whereIn('status', $status);
             })
             ->get();
 

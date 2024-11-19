@@ -7,7 +7,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** @format */
 
-import Cookies from "js-cookie"; /** @format */
+import { router } from "@inertiajs/react";
+import axios from "axios";
 
 type LogoutResponse = {
     status: string;
@@ -19,14 +20,18 @@ type Props = {
 };
 const handleLogout = async ({ setLogout, setLoadLogout }: Props) => {
     setLoadLogout(true);
-    const res = await setLogout();
-    if (res?.status === "success") {
-        // delete cookie
-        Cookies.remove("token");
-        Cookies.remove("role");
-        Cookies.remove("user");
-        return (window.location.href = "/");
-    }
+    // method post
+    axios
+        .post("/logout")
+        .then((res) => {
+            window.dispatchEvent(new Event("cartUpdated"));
+            window.dispatchEvent(new Event("productUpdated"));
+            router.visit("/");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    setLoadLogout(false);
 };
 
 export default handleLogout;

@@ -2,7 +2,14 @@
 import MenuTypes from "@/types/MenuTypes";
 import { ImageIcon } from "@radix-ui/react-icons";
 
-import { BsHouseDoor, BsMarkerTip, BsPerson } from "react-icons/bs";
+import {
+    BsBagHeart,
+    BsBicycle,
+    BsCardHeading,
+    BsHouseDoor,
+    BsMarkerTip,
+    BsPerson,
+} from "react-icons/bs";
 
 const createUrl = (path: string) => `/admin${path}`;
 
@@ -56,6 +63,21 @@ const setAdminMenus = async () => {
             name: "Produk",
             href: createUrl("/products/lists"),
             icon: <ImageIcon />,
+        },
+        {
+            name: "Pesanan",
+            href: createUrl("/orders"),
+            icon: <BsBagHeart />,
+        },
+        {
+            name: "Status Kirim",
+            href: createUrl("/shippingStatuses"),
+            icon: <BsBicycle />,
+        },
+        {
+            name: "Review",
+            href: createUrl("/reviews"),
+            icon: <BsCardHeading />,
         },
     ];
 

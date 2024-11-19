@@ -117,9 +117,10 @@ export function DataTable<T>({
                                             ? "cursor-pointer hover:bg-muted"
                                             : ""
                                     }
-                                    onClick={() =>
-                                        onRowClick && onRowClick(row.original)
-                                    } // Panggil onRowClick saat baris diklik
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        onRowClick && onRowClick(row.original);
+                                    }} // Panggil onRowClick saat baris diklik
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
