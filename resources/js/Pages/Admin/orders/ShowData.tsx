@@ -87,10 +87,7 @@ const ShowData: FC<Props> = ({ setDelete, setEdit }) => {
                         columns={generateColumns(
                             updatedColumnsConfig,
                             setEdit,
-                            (rowId) =>
-                                setDelete({ id: rowId, isDelete: false }),
-                            true,
-                            false
+                            (rowId) => setDelete({ id: rowId, isDelete: false })
                         )}
                         filters={nestedFilters.map(
                             (key) => `${key.split(".").join("_")}_filter`

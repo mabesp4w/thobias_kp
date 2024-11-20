@@ -1,0 +1,1 @@
+import{j as r,I as t}from"./app-CukFzwfd.js";const m=({register:e,errors:a,showModal:o,control:n})=>r.jsx(r.Fragment,{children:r.jsx(t,{label:"Nama Kategori",name:"category_nm",register:e,required:!0,minLength:2,errors:a.category_nm,addClass:"col-span-8"})});export{m as default};
