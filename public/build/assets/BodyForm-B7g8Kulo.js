@@ -1,1 +1,0 @@
-import{j as t,I as a}from"./app-CnHTP8XK.js";const i=({register:r,errors:s,showModal:e,control:n})=>t.jsx(t.Fragment,{children:t.jsx(a,{label:"Nama Kecamatan/Distrik",name:"sub_district_nm",register:r,required:!0,minLength:2,errors:s.sub_district_nm,addClass:"col-span-8"})});export{i as default};

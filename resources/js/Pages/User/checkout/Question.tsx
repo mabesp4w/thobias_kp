@@ -64,7 +64,6 @@ const Question: FC<Props> = ({
             status: "tunggu",
             carts,
         };
-
         const res = await addData(row);
         console.log({ res });
         if (res.status === "success") {
@@ -118,7 +117,7 @@ const Question: FC<Props> = ({
             </p>
             <DialogFooter>
                 <div className="w-full flex gap-x-2 justify-center items-end">
-                    {isLoading && (
+                    {!isLoading && (
                         <BtnDefault
                             addClass="bg-primary"
                             onClick={handleSubmit}

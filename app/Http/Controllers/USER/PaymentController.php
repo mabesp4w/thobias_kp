@@ -27,7 +27,7 @@ class PaymentController
 
     public function submitPayment(Request $request)
     {
-        $order = Order::with(['orderItems.product.productImage', 'user.userInfo'])
+        $order = Order::with(['orderItems.product.productImage', 'user.userInfo', 'shippingCost'])
             ->find($request->order_id); // Dapatkan order berdasarkan ID
         $item_details = [];
         foreach ($order->orderItems as $item) {
@@ -38,6 +38,13 @@ class PaymentController
                 'name' => $item['product']['product_nm']
             ];
         }
+
+        $item_details[] = [
+            'id' => 'shipping_cost',
+            'price' => $order->shippingCost->shipping_cost,
+            'quantity' => 1,
+            'name' => 'Ongkos Kirim'
+        ];
 
         $params = [
             'transaction_details' => [
@@ -79,35 +86,37 @@ class PaymentController
         try {
             // Proses notifikasi berdasarkan status
             if ($hashed == $request->signature_key) {
-                if ($request->transcation_status == 'capture') {
+                if ($request->transaction_status == 'capture') {
                     // Transaksi berhasil
-                    Order::find($request->order_id)->update(['status' => 'dibayar']);
+                    $order = Order::findOrFail($request->order_id);
+                    $order->update(['status' => 'dibayar']);
                     // add shipping status
                     ShippingStatus::create([
                         'order_id' => $request->order_id,
-                        'user_id' => Auth::id(),
+                        'user_id' => $order->user_id,
                         'status' => 'dikemas'
                     ]);
-                } elseif ($request->transcation_status == 'settlement') {
+                } elseif ($request->transaction_status == 'settlement') {
                     // Transaksi selesai
-                    Order::find($request->order_id)->update(['status' => 'dibayar']);
+                    $order = Order::findOrFail($request->order_id);
+                    $order->update(['status' => 'dibayar']);
                     ShippingStatus::create([
                         'order_id' => $request->order_id,
-                        'user_id' => Auth::id(),
+                        'user_id' => $order->user_id,
                         'status' => 'dikemas'
                     ]);
-                } elseif ($request->transcation_status == 'pending') {
+                } elseif ($request->transaction_status == 'pending') {
                     // Transaksi menunggu pembayaran
-                    Order::find($request->order_id)->update(['status' => 'tunggu']);
-                } elseif ($request->transcation_status == 'deny') {
+                    Order::findOrFail($request->order_id)->update(['status' => 'tunggu']);
+                } elseif ($request->transaction_status == 'deny') {
                     // Transaksi ditolak
-                    Order::find($request->order_id)->update(['status' => 'batal']);
-                } elseif ($request->transcation_status == 'expire') {
+                    Order::findOrFail($request->order_id)->update(['status' => 'batal']);
+                } elseif ($request->transaction_status == 'expire') {
                     // Transaksi kadaluarsa
-                    Order::find($request->order_id)->update(['status' => 'batal']);
-                } elseif ($request->transcation_status == 'cancel') {
+                    Order::findOrFail($request->order_id)->update(['status' => 'batal']);
+                } elseif ($request->transaction_status == 'cancel') {
                     // Transaksi dibatalkan
-                    Order::find($request->order_id)->update(['status' => 'batal']);
+                    Order::findOrFail($request->order_id)->update(['status' => 'batal']);
                 }
             }
         } catch (\Throwable $th) {
