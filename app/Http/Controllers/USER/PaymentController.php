@@ -81,7 +81,7 @@ class PaymentController
             if ($hashed == $request->signature_key) {
                 if ($request->transcation_status == 'capture') {
                     // Transaksi berhasil
-                    Order::where('id', $request->order_id)->update(['status' => 'dibayar']);
+                    Order::find($request->order_id)->update(['status' => 'dibayar']);
                     // add shipping status
                     ShippingStatus::create([
                         'order_id' => $request->order_id,
@@ -90,7 +90,7 @@ class PaymentController
                     ]);
                 } elseif ($request->transcation_status == 'settlement') {
                     // Transaksi selesai
-                    Order::where('id', $request->order_id)->update(['status' => 'dibayar']);
+                    Order::find($request->order_id)->update(['status' => 'dibayar']);
                     ShippingStatus::create([
                         'order_id' => $request->order_id,
                         'user_id' => Auth::id(),
@@ -98,16 +98,16 @@ class PaymentController
                     ]);
                 } elseif ($request->transcation_status == 'pending') {
                     // Transaksi menunggu pembayaran
-                    Order::where('id', $request->order_id)->update(['status' => 'tunggu']);
+                    Order::find($request->order_id)->update(['status' => 'tunggu']);
                 } elseif ($request->transcation_status == 'deny') {
                     // Transaksi ditolak
-                    Order::where('id', $request->order_id)->update(['status' => 'batal']);
+                    Order::find($request->order_id)->update(['status' => 'batal']);
                 } elseif ($request->transcation_status == 'expire') {
                     // Transaksi kadaluarsa
-                    Order::where('id', $request->order_id)->update(['status' => 'batal']);
+                    Order::find($request->order_id)->update(['status' => 'batal']);
                 } elseif ($request->transcation_status == 'cancel') {
                     // Transaksi dibatalkan
-                    Order::where('id', $request->order_id)->update(['status' => 'batal']);
+                    Order::find($request->order_id)->update(['status' => 'batal']);
                 }
             }
         } catch (\Throwable $th) {
