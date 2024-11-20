@@ -47,7 +47,6 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'payment'], function () {
         Route::post('/', [App\Http\Controllers\USER\PaymentController::class, 'submitPayment'])->name('payment.submit');
-        Route::post('/callback', [App\Http\Controllers\USER\PaymentController::class, 'paymentCallback'])->name('payment.callback');
         Route::get('/status/{orderId}', [App\Http\Controllers\USER\PaymentController::class, 'getTransactionStatus'])->name('payment.status');
     });
 });

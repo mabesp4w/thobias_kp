@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController
 {
+    protected $serverKey;
     public function __construct()
     {
         // Konfigurasi Midtrans
-        Config::$serverKey = config('services.midtrans.server_key');
+
+        $this->serverKey = Config::$serverKey = Config::$serverKey = config('services.midtrans.server_key');
         Config::$isProduction = config('services.midtrans.is_production');
         Config::$isSanitized = config('services.midtrans.sanitized');
         Config::$is3ds = config('services.midtrans.3ds');
@@ -70,56 +72,43 @@ class PaymentController
         }
     }
 
-    public function paymentCallback()
+    public function paymentCallback(Request $request)
     {
+        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $this->serverKey);
         // Inisialisasi notifikasi
-        $notification = new Notification();
-
-        $transaction = $notification->transaction_status;
-        $type = $notification->payment_type;
-        $orderId = $notification->order_id;
-        $fraud = $notification->fraud_status;
-
-        // Log data for debugging
-        Log::info('Payment Notification:', (array) $notification);
         try {
             // Proses notifikasi berdasarkan status
-            if ($transaction == 'capture') {
-                if ($type == 'credit_card') {
-                    if ($fraud == 'challenge') {
-                        // Transaksi perlu verifikasi manual
-                        Order::where('id', $orderId)->update(['status' => 'tunggu']);
-                    } else {
-                        // Transaksi berhasil
-                        Order::where('id', $orderId)->update(['status' => 'dibayar']);
-                        // add shipping status
-                        ShippingStatus::create([
-                            'order_id' => $orderId,
-                            'user_id' => Auth::id(),
-                            'status' => 'dikemas'
-                        ]);
-                    }
+            if ($hashed == $request->signature_key) {
+                if ($request->transcation_status == 'capture') {
+                    // Transaksi berhasil
+                    Order::where('id', $request->order_id)->update(['status' => 'dibayar']);
+                    // add shipping status
+                    ShippingStatus::create([
+                        'order_id' => $request->order_id,
+                        'user_id' => Auth::id(),
+                        'status' => 'dikemas'
+                    ]);
+                } elseif ($request->transcation_status == 'settlement') {
+                    // Transaksi selesai
+                    Order::where('id', $request->order_id)->update(['status' => 'dibayar']);
+                    ShippingStatus::create([
+                        'order_id' => $request->order_id,
+                        'user_id' => Auth::id(),
+                        'status' => 'dikemas'
+                    ]);
+                } elseif ($request->transcation_status == 'pending') {
+                    // Transaksi menunggu pembayaran
+                    Order::where('id', $request->order_id)->update(['status' => 'tunggu']);
+                } elseif ($request->transcation_status == 'deny') {
+                    // Transaksi ditolak
+                    Order::where('id', $request->order_id)->update(['status' => 'batal']);
+                } elseif ($request->transcation_status == 'expire') {
+                    // Transaksi kadaluarsa
+                    Order::where('id', $request->order_id)->update(['status' => 'batal']);
+                } elseif ($request->transcation_status == 'cancel') {
+                    // Transaksi dibatalkan
+                    Order::where('id', $request->order_id)->update(['status' => 'batal']);
                 }
-            } elseif ($transaction == 'settlement') {
-                // Transaksi selesai
-                Order::where('id', $orderId)->update(['status' => 'dibayar']);
-                ShippingStatus::create([
-                    'order_id' => $orderId,
-                    'user_id' => Auth::id(),
-                    'status' => 'dikemas'
-                ]);
-            } elseif ($transaction == 'pending') {
-                // Transaksi menunggu pembayaran
-                Order::where('id', $orderId)->update(['status' => 'tunggu']);
-            } elseif ($transaction == 'deny') {
-                // Transaksi ditolak
-                Order::where('id', $orderId)->update(['status' => 'batal']);
-            } elseif ($transaction == 'expire') {
-                // Transaksi kadaluarsa
-                Order::where('id', $orderId)->update(['status' => 'batal']);
-            } elseif ($transaction == 'cancel') {
-                // Transaksi dibatalkan
-                Order::where('id', $orderId)->update(['status' => 'batal']);
             }
         } catch (\Throwable $th) {
             return response()->json([
@@ -129,6 +118,6 @@ class PaymentController
             ], 500);
         }
 
-        return response()->json(['message' => 'Notification processed successfully']);
+        return response()->json(['message' => 'Notification processed successfully'])->setStatusCode(200);
     }
 }

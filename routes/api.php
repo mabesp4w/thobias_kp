@@ -27,3 +27,8 @@ Route::group(['prefix' => 'orders'], function () {
     Route::get('all', [App\Http\Controllers\API\OrderAPI::class, 'all'])->name('orders.all');
     Route::get('{id}', [App\Http\Controllers\API\OrderAPI::class, 'show'])->name('orders.show');
 });
+
+// payments
+Route::group(['prefix' => 'payment'], function () {
+    Route::post('/callback', [App\Http\Controllers\USER\PaymentController::class, 'paymentCallback'])->name('payment.callback');
+});
