@@ -2,8 +2,8 @@
 
 import axios from "axios";
 
-// const BASE_URL = "https://template.satgar.my.id";
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://erta-beauty.sitoko.my.id";
+// const BASE_URL = "http://localhost:8000";
 const url_auth = `${BASE_URL}/auth`;
 const url_api = `${BASE_URL}/api`;
 const url_crud = `${BASE_URL}/crud`;
