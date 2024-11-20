@@ -1,0 +1,1 @@
+import{j as a}from"./app-DTygMt2q.js";const s=[{accessorKey:"category_nm",header:"Category",cell:({row:e})=>a.jsx("div",{className:"capitalize",children:e.getValue("category_nm")})}];export{s as default};

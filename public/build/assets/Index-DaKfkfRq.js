@@ -1,1 +1,0 @@
-import{j as e,Y as t}from"./app-CukFzwfd.js";import{S as r}from"./ScrollRevealComponent-B23teDUn.js";const n=()=>e.jsxs(e.Fragment,{children:[e.jsx(t,{title:"Dashboard Admin"}),e.jsx(r,{children:e.jsx("h2",{className:"text-center text-2xl",children:"Admin panel"})})]});export{n as default};

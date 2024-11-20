@@ -1,0 +1,1 @@
+import{j as e,Y as t}from"./app-DTygMt2q.js";import{S as r}from"./ScrollRevealComponent-DPoyZAeo.js";const n=()=>e.jsxs(e.Fragment,{children:[e.jsx(t,{title:"Dashboard Admin"}),e.jsx(r,{children:e.jsx("h2",{className:"text-center text-2xl",children:"Admin panel"})})]});export{n as default};

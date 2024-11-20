@@ -87,21 +87,22 @@ const Question: FC<Props> = ({
             onSuccess: function (result: any) {
                 /* Handle success */
                 console.log({ result });
-                router.visit("/orders");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
             onPending: function (result: any) {
                 /* Handle pending */
                 console.log({ result });
-                router.visit("/orders");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
             onError: function (result: any) {
                 /* Handle error */
                 console.log({ result });
-                router.visit("/orders");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
             onClose: function () {
                 /* Handle when user close the popup without finishing payment */
                 console.log("user closed the popup");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
         });
     };

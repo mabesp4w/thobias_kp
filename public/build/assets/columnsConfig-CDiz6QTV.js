@@ -1,1 +1,0 @@
-import{j as a}from"./app-CukFzwfd.js";const t=[{accessorKey:"sub_district_nm",header:"Nama Kecamatan/Distrik",cell:({row:s})=>a.jsx("div",{className:"capitalize",children:s.getValue("sub_district_nm")})}];export{t as default};

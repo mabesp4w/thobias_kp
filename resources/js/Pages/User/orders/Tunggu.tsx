@@ -61,20 +61,21 @@ const Tunggu = ({ order, snapLoaded }: Props) => {
             onSuccess: function (result: any) {
                 /* Handle success */
                 console.log({ result });
-                router.visit("/orders");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
             onPending: function (result: any) {
                 /* Handle pending */
                 console.log({ result });
-                router.visit("/orders");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
             onError: function (result: any) {
                 /* Handle error */
                 console.log({ result });
-                router.visit("/orders");
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
             },
             onClose: function () {
                 /* Handle when user close the popup without finishing payment */
+                router.visit("https://erta-beauty.sitoko.my.id/orders");
                 console.log("user closed the popup");
             },
         });

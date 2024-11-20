@@ -1,1 +1,0 @@
-import{j as i,a as e}from"./app-CukFzwfd.js";const r=({setIndexBox:s})=>[{header:"Posisi",cell:({row:a})=>i.jsx("div",{className:"capitalize",children:a.original.position||"Tidak ada kategori"})},{header:"Gambar",cell:({row:a})=>i.jsx("img",{src:`${e}/${a.original.banner_img}`,className:"h-20 cursor-pointer",onClick:()=>{s(a.index)}})}];export{r as default};
