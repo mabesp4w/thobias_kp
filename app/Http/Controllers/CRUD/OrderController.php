@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\CrudResource;
+use App\Models\ShippingStatus;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController
@@ -128,10 +129,12 @@ class OrderController
             return $validate;
         }
 
-        $order = Order::findOrFail($id);
-        $order->update($request->only(['status']));
+        ShippingStatus::find($id)->update([
+            'status' => $data_req['status'],
+        ]);
 
-        return new CrudResource('success', 'Data Berhasil Diubah', $order->load('orderItems'));
+
+        return new CrudResource('success', 'Data Berhasil Diubah', []);
     }
 
     /**
