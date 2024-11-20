@@ -30,6 +30,7 @@ const Question: FC<Props> = ({
 }) => {
     // state
     const [snapLoaded, setSnapLoaded] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     // store
     const { addData } = useOrders();
     // useEffect
@@ -48,6 +49,7 @@ const Question: FC<Props> = ({
     }, []);
 
     const handleSubmit = async () => {
+        setIsLoading(true);
         const total_price = carts.reduce(
             (total, cart) => total + cart.product.price * cart.quantity,
             0
@@ -70,6 +72,7 @@ const Question: FC<Props> = ({
             handlePayment(res.data.data);
             router.visit("/orders");
         }
+        setIsLoading(false);
     };
 
     const handlePayment = async (order: OrdersTypes) => {
@@ -115,9 +118,14 @@ const Question: FC<Props> = ({
             </p>
             <DialogFooter>
                 <div className="w-full flex gap-x-2 justify-center items-end">
-                    <BtnDefault addClass="bg-primary" onClick={handleSubmit}>
-                        Lanjut
-                    </BtnDefault>
+                    {isLoading && (
+                        <BtnDefault
+                            addClass="bg-primary"
+                            onClick={handleSubmit}
+                        >
+                            Lanjut
+                        </BtnDefault>
+                    )}
                     <Button
                         variant={"outline"}
                         onClick={() => setOpenDialog(false)}

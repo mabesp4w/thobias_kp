@@ -117,7 +117,5 @@ class PaymentController
                 'error' => $th
             ], 500);
         }
-
-        return response()->json(['message' => 'Notification processed successfully'])->setStatusCode(200);
     }
 }
