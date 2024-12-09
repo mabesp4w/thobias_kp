@@ -96,6 +96,11 @@ class PaymentController
                         'user_id' => $order->user_id,
                         'status' => 'dikemas'
                     ]);
+                    // reduce stock product
+                    foreach ($order->orderItems as $item) {
+                        $product = $item->product;
+                        $product->update(['stock' => $product->stock - $item->quantity]);
+                    }
                 } elseif ($request->transaction_status == 'settlement') {
                     // Transaksi selesai
                     $order = Order::findOrFail($request->order_id);
@@ -105,6 +110,11 @@ class PaymentController
                         'user_id' => $order->user_id,
                         'status' => 'dikemas'
                     ]);
+                    // reduce stock product
+                    foreach ($order->orderItems as $item) {
+                        $product = $item->product;
+                        $product->update(['stock' => $product->stock - $item->quantity]);
+                    }
                 } elseif ($request->transaction_status == 'pending') {
                     // Transaksi menunggu pembayaran
                     Order::findOrFail($request->order_id)->update(['status' => 'tunggu']);
